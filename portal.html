@@ -305,6 +305,8 @@
  .ofr-pr{display:flex;align-items:center;gap:8px;white-space:nowrap}
  .ofr-pr s{color:var(--muted);font-size:13px}
  .ofr .btn.block{margin-top:6px}
+ .msg.big{font-size:16px;font-weight:700;line-height:1.5}
+ .msg.big .btn{margin-top:10px;text-decoration:none}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head><body>
@@ -1009,7 +1011,18 @@ async function prepareOrder(){
   }
   const r=await call('createOrder',{itemId:want.id,level:want.level,coupon:cp?cp.code:''});
   if(CUR!==want||COUPON!==cp) return;            // user switched item or coupon meanwhile
-  if(!r.ok){ b.textContent='Online payment unavailable';
+    if(!r.ok){
+    if(/view-only/i.test(r.error||'')){
+      b.textContent='PDF download not available';
+      const it=LIST.find(x=>x.id===want.id)||{}, m=$('gwmsg');
+      m.className='msg big'; m.textContent='This chapter is view-only. You can order a printed copy instead.';
+      const a=el('a','btn btn-gold','📖 Order the printed copy');
+      a.href=it.print||(window.EP_SITE&&EP_SITE.forms&&EP_SITE.forms.book)||'publications.html';
+      a.target='_blank'; a.rel='noopener';
+      m.append(document.createElement('br'),a);
+      return;
+    }
+    b.textContent='Online payment unavailable';
     say($('gwmsg'),r.error+' · Tap Cancel and try again.'); return; }
   ORDER=r.id; b.href=r.url; b.classList.remove('dis');
   b.textContent='Pay ₹'+rs(r.amount)+' now';
