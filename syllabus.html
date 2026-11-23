@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Syllabus and timetable | Expert Physics</title>
+<meta name="description" content="Physics syllabus for HS, NEET, JEE, B.Sc., M.Sc., CSIR-NET, GATE and job exams, and current batch timings.">
+<meta property="og:title" content="Syllabus and timetable | Expert Physics">
+<meta property="og:description" content="Physics syllabus for HS, NEET, JEE, B.Sc., M.Sc., CSIR-NET, GATE and job exams, and current batch timings.">
+<meta property="og:image" content="assets/img/banner-home.webp">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/icon-32.png">
+<link rel="apple-touch-icon" href="assets/img/icon-180.png">
+<meta name="theme-color" content="#081333">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Literata:opsz,wght@7..72,500;7..72,600;7..72,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/chrome.css">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<script src="assets/site.js"></script>
+<main id="main">
+<section class="hero sm" style="background-image:url(assets/img/banner-msc.webp)">
+  <div class="w"><p class="crumb"><a href="index.html">Home</a> / Courses / Syllabus</p><h1>Syllabus and timetable</h1><p>What each programme covers, and when the current batches meet.</p></div>
+</section>
+
+<section class="sec"><div class="w">
+<div class="syl"><div><h2>HS, NEET &amp; JEE</h2><p class="muted">Class XI and XII, NCERT-based. Order follows the Board syllabus.</p></div><ul><li>Units, dimensions and measurement</li><li>Motion in one and two dimensions</li><li>Laws of motion</li><li>Work, energy and power</li><li>System of particles and rotational motion</li><li>Gravitation</li><li>Mechanical properties of solids and fluids</li><li>Thermal properties of matter</li><li>Thermodynamics and kinetic theory</li><li>Oscillations and waves</li><li>Electric charges, fields and potential</li><li>Capacitance</li><li>Current electricity</li><li>Moving charges and magnetism</li><li>Magnetism and matter</li><li>Electromagnetic induction and alternating current</li><li>Electromagnetic waves</li><li>Ray optics and optical instruments</li><li>Wave optics</li><li>Dual nature of radiation and matter</li><li>Atoms and nuclei</li><li>Semiconductor electronics</li></ul></div><div class="syl"><div><h2>B.Sc. Physics</h2><p class="muted">Papers follow your university’s semester plan.</p></div><ul><li>Mathematical physics</li><li>Mechanics</li><li>Electricity and magnetism</li><li>Waves and optics</li><li>Thermal physics</li><li>Modern physics</li><li>Analog and digital electronics</li><li>Quantum mechanics</li><li>Solid state physics</li><li>Atomic and molecular physics</li><li>Nuclear and particle physics</li><li>Statistical mechanics</li><li>Electromagnetic theory</li><li>Practical papers</li></ul></div><div class="syl"><div><h2>M.Sc., NET &amp; GATE</h2><p class="muted">Units of the CSIR-NET and GATE physics syllabus.</p></div><ul><li>Mathematical methods of physics</li><li>Classical mechanics</li><li>Electromagnetic theory</li><li>Quantum mechanics</li><li>Thermodynamics and statistical physics</li><li>Electronics and experimental methods</li><li>Atomic and molecular physics</li><li>Condensed matter physics</li><li>Nuclear and particle physics</li><li>Research methodology</li></ul></div><div class="syl"><div><h2>Job exams</h2><p class="muted">Science section of WBCS, TET, SSC, PSC and RRB exams.</p></div><ul><li>Measurement and units</li><li>Motion, force and energy</li><li>Heat and temperature</li><li>Light and sound</li><li>Electricity and magnetism</li><li>Modern physics in daily life</li><li>Everyday science and technology</li><li>Exam-wise previous-year questions</li></ul></div>
+</div></section>
+
+<section class="sec paper" id="timetable"><div class="w">
+  <div class="sec-intro"><h2>Current batches</h2><p>Days and times of the batches now running. Times are Indian Standard Time.</p></div>
+  <div id="tt"></div>
+</div></section>
+</main>
+<div id="site-footer"></div>
+<script>
+/* EDIT THE TIMETABLE HERE. One line per batch:
+   ['Batch', 'Days', 'Time (IST)', 'Starts'],
+   Leave the list empty to show the "ask for timings" message. */
+const TIMETABLE = [
+  // ['HS / NEET Class XI', 'Mon, Wed, Fri', '6:00 to 7:30 pm', '1 Dec 2026'],
+];
+(function(){
+  const box=document.getElementById('tt');
+  if(!TIMETABLE.length){
+    box.innerHTML='<p class="note">New batch timings are announced on WhatsApp. <a data-ep-href="whatsapp" href="#">Ask for the current timetable</a> or <a href="enroll.html#enquire">send an enquiry</a>.</p>';
+    return;
+  }
+  box.innerHTML='<div class="tbl-wrap"><table><thead><tr><th>Batch</th><th>Days</th><th>Time (IST)</th><th>Starts</th></tr></thead><tbody>'+
+    TIMETABLE.map(r=>'<tr><th scope="row">'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+(r[3]||'')+'</td></tr>').join('')+'</tbody></table></div>';
+})();
+</script>
+</body>
+</html>

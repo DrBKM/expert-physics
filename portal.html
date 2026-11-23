@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Student portal: study material and mock tests | Expert Physics</title>
+<meta name="description" content="Physics chapter notes and timed mock tests for HS, NEET, JEE, B.Sc., M.Sc., GATE, CSIR-NET and job exams. Pay by UPI, unlock instantly.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/icon-32.png">
+<link rel="apple-touch-icon" href="assets/img/icon-180.png">
+<meta name="theme-color" content="#081333">
+<link rel="stylesheet" href="assets/chrome.css">
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://script.googleusercontent.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Literata:opsz,wght@7..72,600&display=swap" rel="stylesheet">
+<style>
+ :root{
+  --bg:#f4f6fb;--card:#fff;--ink:#0f172a;--muted:#64748b;--line:#e4e8f1;
+  --brand:#1d4ed8;--brand-d:#1e40af;--brand-soft:#eef2ff;
+  --gold:#b45309;--gold-b:#d97706;--gold-soft:#fff8eb;
+  --green:#047857;--green-soft:#ecfdf5;--red:#b91c1c;--red-soft:#fef2f2;
+  --amber:#92400e;--amber-soft:#fef3c7;
+  --r:14px;--sh:0 1px 2px rgba(15,23,42,.04),0 8px 24px rgba(15,23,42,.06);
+ }
+ *{box-sizing:border-box;margin:0;padding:0}
+ body{font-family:Inter,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);
+      font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+ a{color:var(--brand);font-weight:600}
+ .wrap{max-width:1080px;margin:0 auto;padding:20px 14px 36px}
+ .hide{display:none!important}
+ .muted{color:var(--muted)} .small{font-size:12.5px}
+ .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh)}
+
+ /* buttons */
+ .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid transparent;cursor:pointer;
+      font:600 14px Inter,sans-serif;border-radius:10px;padding:10px 16px;transition:background .15s,border-color .15s;white-space:nowrap}
+ .btn:disabled{opacity:.55;cursor:not-allowed}
+ .btn.sm{padding:7px 12px;font-size:13px}
+ .btn.block{width:100%}
+ .btn-primary{background:var(--brand);color:#fff}.btn-primary:hover:not(:disabled){background:var(--brand-d)}
+ .btn-outline{background:#fff;color:var(--ink);border-color:var(--line)}.btn-outline:hover:not(:disabled){background:#f8fafc;border-color:#cbd3e1}
+ .btn-success{background:var(--green-soft);color:var(--green);border-color:#a7f3d0}.btn-success:hover:not(:disabled){background:#d1fae5}
+ .btn-gold{background:var(--gold-b);color:#fff}.btn-gold:hover:not(:disabled){background:var(--gold)}
+ .btn-ghost{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)}.btn-ghost:hover{background:rgba(255,255,255,.22)}
+ .spin{width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
+ @keyframes sp{to{transform:rotate(360deg)}}
+
+ /* top bar */
+ .topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#fff;border-radius:var(--r);padding:26px 24px;box-shadow:var(--sh);
+   background:linear-gradient(90deg,rgba(8,19,51,.94),rgba(8,19,51,.55) 60%,rgba(8,19,51,.2)),#081333 url(assets/img/banner-resources.webp) center/cover}
+ .brand{display:flex;align-items:center;gap:13px}
+ .logo{width:48px;height:48px;border-radius:12px;display:block}
+ .brand h1{font:600 24px/1.2 "Literata",Georgia,serif;letter-spacing:-.2px}
+ .brand p{font-size:13px;opacity:.82}
+ .user{display:flex;align-items:center;gap:11px}
+ .avatar{width:36px;height:36px;border-radius:50%;background:#fff;color:var(--brand);display:grid;place-items:center;font-weight:700}
+ .uname{font-size:14px;font-weight:600;line-height:1.2}
+ .uplan{font-size:12px;opacity:.8}
+
+ /* boot loader */
+ .boot{padding:60px 0;text-align:center;color:var(--muted)}
+ .boot .spin{width:26px;height:26px;border-width:3px;color:var(--brand);margin-bottom:10px}
+
+ /* auth */
+ .auth{max-width:430px;margin:26px auto 0;padding:26px}
+ .auth h2{font-size:21px;letter-spacing:-.3px}
+ .auth .sub{color:var(--muted);font-size:14px;margin:4px 0 18px}
+ .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:#f1f4f9;border-radius:11px;padding:4px;margin-bottom:18px}
+ .seg button{border:0;background:transparent;padding:9px;border-radius:8px;font:600 13.5px Inter,sans-serif;color:var(--muted);cursor:pointer}
+ .seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(15,23,42,.1)}
+ label{display:block;font-size:13px;font-weight:600;margin:12px 0 5px}
+ input,textarea{width:100%;padding:11px 12px;border:1px solid #cfd6e4;border-radius:10px;font:15px Inter,sans-serif;background:#fff;color:var(--ink)}
+ textarea{resize:vertical;min-height:84px}
+ input:focus,textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+ .pw{position:relative}.pw input{padding-right:62px}
+ .pw span{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:13px;color:var(--brand);font-weight:600;user-select:none}
+ .auth .btn.block{margin-top:18px}
+ .linkrow{display:flex;justify-content:space-between;margin-top:14px;font-size:13px}
+ .linkrow a{cursor:pointer;font-weight:500}
+ .inline{display:flex;gap:8px}.inline input{flex:1;min-width:0}
+ .cc{display:grid;place-items:center;padding:0 11px;border:1px solid #cfd6e4;border-radius:10px;background:#f8fafc;font-weight:600;font-size:14px;color:var(--muted)}
+ .phlink{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+ .msg{min-height:20px;font-size:13.5px;margin-top:10px;color:var(--red)}
+ .msg.ok{color:var(--green)}
+ /* checkbox rows */
+ label.chk{display:flex;gap:9px;align-items:flex-start;font-weight:500;font-size:13.5px;margin:14px 0 0;cursor:pointer;color:var(--ink)}
+ label.chk input{width:auto;margin-top:3px;flex:none}
+
+ /* section headers */
+ .sec-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:26px 2px 12px}
+ .sec-head h2{font-size:18px;font-weight:700;letter-spacing:-.2px}
+ .sec-head .muted{font-size:13px}
+
+ /* plans */
+ .plans{display:grid;grid-template-columns:1fr 1.25fr;gap:14px}
+ .plan{padding:20px}
+ .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:3px 9px;border-radius:99px;
+   color:var(--brand);background:var(--brand-soft)}
+ .plan h3{font-size:16px;margin:10px 0 2px}
+ .prices{display:flex;gap:22px;margin:12px 0 6px}
+ .prices b{font-size:24px;font-weight:800;letter-spacing:-.4px}
+ .prices small{display:block;font-size:12px;color:var(--muted)}
+ .plan.featured{border:1.5px solid #f2c063;background:linear-gradient(180deg,var(--gold-soft),#fff 75%)}
+ .plan.featured .tag{color:var(--gold);background:#fdecc8}
+ .big{font-size:30px;font-weight:800;letter-spacing:-.6px;margin-top:6px}
+ .big small{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:0}
+ .feat{list-style:none;margin:10px 0 16px;display:grid;gap:6px}
+ .feat li{display:flex;gap:8px;font-size:14px}.feat svg{flex:none;margin-top:3px}
+
+ /* payment panel */
+ .pay{margin-top:18px;padding:0;overflow:hidden;border-color:#c7d2fe}
+ .pay-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 20px;background:var(--brand-soft);border-bottom:1px solid #dbe3fd}
+ .eyebrow{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--brand)}
+ .pay-head h3{font-size:17px;margin-top:2px}
+ .amount{font-size:28px;font-weight:800;letter-spacing:-.5px;color:var(--brand-d);white-space:nowrap}
+ .pold{font-size:12.5px;color:var(--green);font-weight:600;text-align:right}
+ .steps{padding:6px 20px}
+ .step{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:16px 0;border-bottom:1px dashed var(--line)}
+ .step:last-child{border-bottom:0}
+ .sn{width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px}
+ .step b{display:block;margin-bottom:8px}
+ /* coupon */
+ .cp{padding:16px 20px 2px;border-bottom:1px solid var(--line)}
+ .cp b{display:block;font-size:13.5px;margin-bottom:8px}
+ .cp input{text-transform:uppercase}
+ .cp .msg{margin:6px 0 8px}
+ /* instant gateway payment */
+ a.btn{text-decoration:none}
+ a.btn.dis{pointer-events:none;opacity:.6}
+ .gw{padding:18px 20px;border-bottom:1px solid var(--line)}
+ .big-pay{font-size:16px;padding:14px 18px;border-radius:12px}
+ .gw-apps{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:10px 0 4px}
+ .gw-apps span{font-size:11.5px;font-weight:600;color:var(--muted);background:#f1f4f9;border:1px solid var(--line);border-radius:99px;padding:3px 9px}
+ .gw-steps{margin:12px 0 0 18px;font-size:13.5px;color:var(--muted);display:grid;gap:4px}
+ .fs-link{display:none;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:4px 10px;border-radius:99px;align-self:flex-start;margin-left:auto}
+ .tg-ok{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-weight:600;font-size:14px}
+ .pay-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 20px;border-top:1px solid var(--line);background:#fafbfe}
+
+ /* chapters */
+ .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+ .search{flex:1;min-width:200px;position:relative}
+ .search input{padding-left:36px}
+ .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%)}
+ .chips{display:flex;gap:6px}
+ .chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 13px;font:500 13px Inter,sans-serif;color:var(--muted);cursor:pointer}
+ .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+ .list{overflow:hidden}
+ .row{display:grid;grid-template-columns:38px 1fr auto;gap:14px;align-items:center;padding:14px 18px;border-top:1px solid var(--line)}
+ .row:first-child{border-top:0}
+ .row:hover{background:#fafbfe}
+ .num{width:34px;height:34px;border-radius:9px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;font-weight:700;font-size:13px}
+ .row.locked .num{background:#f1f5f9;color:#64748b}
+ .title{font-weight:600}
+ .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:3px;font-size:12.5px;color:var(--muted)}
+ .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:.2px}
+ .b-free{background:var(--green-soft);color:var(--green)}
+ .b-own{background:var(--green-soft);color:var(--green)}
+ .b-view{background:var(--brand-soft);color:var(--brand)}
+ .b-lock{background:#f1f5f9;color:#475569}
+ .b-full{background:#fdecc8;color:var(--gold)}
+ .b-pend{background:var(--amber-soft);color:var(--amber)}
+ .actions{display:flex;gap:8px}
+ .actions .btn{min-width:122px}
+ .empty{padding:34px;text-align:center;color:var(--muted)}
+ .sk{height:62px;border-top:1px solid var(--line);background:linear-gradient(90deg,#fff 0,#f3f5fa 50%,#fff 100%);background-size:200% 100%;animation:sh 1.2s infinite}
+ .sk:first-child{border-top:0}
+ @keyframes sh{to{background-position:-200% 0}}
+
+ /* viewer */
+ .viewer{margin-top:18px;overflow:hidden}
+ .vbar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;background:#fff;border-bottom:1px solid var(--line)}
+ .vbar b{display:block}.vbar span{font-size:12.5px}
+ #pages{padding:14px;background:#eef1f6}
+ #pages canvas{display:block;width:100%;margin:0 auto 12px;user-select:none;-webkit-user-select:none;border-radius:6px;box-shadow:0 2px 10px rgba(15,23,42,.12);background:#fff}
+
+ .foot{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:26px;font-size:12.5px;color:var(--muted)}
+ .foot span{display:flex;align-items:center;gap:6px}
+
+ #toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;
+   background:var(--ink);color:#fff;padding:11px 16px;border-radius:10px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.2);transition:.25s;max-width:90%;z-index:9}
+ #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+ #toast.err{background:var(--red)}
+
+ @media print{body{display:none}}
+ html,body{min-height:100%}
+ @media (max-width:720px){
+  .wrap{padding:12px 10px 16px}
+  .foot{margin-top:14px;gap:10px}
+  .fs-link{display:inline-block}
+  .plans{grid-template-columns:1fr}
+  .row{grid-template-columns:34px 1fr}
+  .actions{grid-column:1/-1}.actions .btn{flex:1;min-width:0}
+  .uinfo{display:none}
+ }
+
+ /* ---- mock tests ---- */
+ .mt-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--line)}
+ .mt-row:last-child{border-bottom:0}
+ .mt-title{font-weight:600}.mt-meta{font-size:12.5px;color:var(--muted);margin-top:2px}
+ .mt-act{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+ .exam{padding:20px}
+ .ex-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+ .timer{font:700 18px Inter,sans-serif;background:var(--brand-soft);color:var(--brand);padding:6px 14px;border-radius:999px}
+ .timer.low{background:var(--red-soft);color:var(--red)}
+ .qtext{font-size:17px;font-weight:500;margin:10px 0 12px;user-select:none;-webkit-user-select:none}
+ .opt{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:7px 0;cursor:pointer;user-select:none;-webkit-user-select:none}
+ .opt.sel{border-color:var(--brand);background:var(--brand-soft)}
+ .opt input{width:auto;height:auto;margin:3px 0 0;padding:0;flex:none}
+ .opt .obody{flex:1;min-width:0}
+ /* figures (pictures) inside questions and options */
+ .qimg{display:block;max-width:100%;max-height:420px;margin:6px 0 14px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:6px;user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
+ .oimg{display:block;max-width:100%;max-height:260px;margin:6px 0 2px;border-radius:8px;background:#fff;user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
+ .mt-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+ .pal{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+ .pal button{width:38px;height:36px;border-radius:8px;border:1px solid var(--line);background:#fff;font-weight:600;cursor:pointer;padding:0}
+ .pal button.done{background:var(--green-soft);border-color:#a7f3d0;color:var(--green)}
+ .pal button.cur{outline:2px solid var(--brand)}
+ .score{font-size:40px;font-weight:800;color:var(--brand);letter-spacing:-1px}
+ .tbar{margin:9px 0;font-size:13.5px}.tbar>div{background:#e8edf5;border-radius:6px;height:9px;margin-top:4px;overflow:hidden}
+ .tbar i{display:block;height:9px;border-radius:6px;background:var(--brand)}
+ .tips{margin:6px 0 0 18px}.tips li{margin:6px 0}
+ details.rv{border:1px solid var(--line);border-radius:10px;padding:9px 13px;margin:7px 0}
+ details.rv summary{cursor:pointer;font-weight:600}
+ details.rv .ok{color:var(--green);font-weight:600}
+
+ /* ---- intro + category cards ---- */
+ .intro{padding:24px 26px;margin-top:16px;background:linear-gradient(180deg,#f5f7ff,#fff);border-color:#d9e0fb}
+ .intro h2{font-size:22px;letter-spacing:-.3px}
+ .intro p{color:var(--muted);font-size:14px;margin:6px 0 12px}
+ .intro ul{margin:0 0 0 20px;display:grid;gap:6px}
+ .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+ .cat{padding:20px;display:flex;flex-direction:column;gap:4px}
+ .cat .num{width:44px;height:40px;margin-bottom:12px}
+ .cat h3{font-size:17px;font-weight:700}
+ .cat .cm{color:var(--muted);font-size:14px;margin-bottom:14px}
+ .cat .btn{align-self:flex-start;margin-top:auto}
+ .cat.off{opacity:.7}
+ .back{margin:18px 0 4px}
+ @media (max-width:720px){.cat-grid{grid-template-columns:1fr}}
+
+ /* ---- reviews + email offers ---- */
+ .rvform{padding:18px 20px;margin-bottom:12px}
+ .rvform b{display:block;margin-bottom:6px}
+ .stars{display:flex;gap:4px;margin:4px 0 10px}
+ .stars button{border:0;background:transparent;font-size:30px;line-height:1;cursor:pointer;color:#cbd5e1;padding:0 2px}
+ .stars button.on{color:#f59e0b}
+ .rvform .btn{margin-top:12px}
+ .rvrow{padding:14px 18px;border-top:1px solid var(--line)}
+ .rvrow:first-child{border-top:0}
+ .rvtop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px}
+ .rvstars{color:#f59e0b;letter-spacing:1px}
+ .rvtxt{margin-top:4px;font-size:14.5px;white-space:pre-wrap;word-break:break-word}
+ .promo{padding:14px 18px;margin-top:22px}
+ .promo label.chk{margin:0;font-weight:600}
+
+ /* ---- courses + rewards ---- */
+ .cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:6px}
+ .course{padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+ .course .badge{align-self:flex-start}
+ .ctitle{font-weight:700;font-size:15.5px}
+ .cprice{display:flex;gap:8px;align-items:baseline}
+ .cprice b{font-size:20px;font-weight:800}
+ .cprice s{color:var(--muted);font-size:13px}
+ .ccoupon{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;background:var(--gold-soft);border:1px dashed #f2c063;border-radius:10px;padding:7px 10px}
+ .ccoupon b{letter-spacing:.5px}
+ .course .btn{margin-top:auto}
+ .course .btn + .btn{margin-top:0}
+ .cbox{margin:14px 0}
+ .cbox h3{font-size:16px;margin:0 2px 10px}
+ .rwd{padding:12px 16px;margin:0 0 12px;background:var(--green-soft);border-color:#a7f3d0;font-size:14px}
+ @media (max-width:720px){.cgrid{grid-template-columns:1fr}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head><body>
+<script src="assets/site.js"></script>
+<main id="main"><div class="wrap">
+
+<header class="topbar">
+ <div class="brand">
+  <img class="logo" src="assets/img/mark-96.png" alt="" width="48" height="48">
+  <div><h1>Student portal</h1><p>Study material and mock tests for HS, NEET, JEE, B.Sc., GATE and job exams</p></div>
+ </div>
+ <div id="userbox" class="user hide">
+  <div class="avatar" id="av"></div>
+  <div class="uinfo"><div class="uname" id="nm"></div><div class="uplan" id="st"></div></div>
+  <button class="btn btn-ghost sm" onclick="signout(this)">Sign out</button>
+ </div>
+ <!-- shown only to visitors who are not signed in -->
+ <button id="signinTop" class="btn btn-ghost sm hide" onclick="openAuth()">Sign in</button>
+</header>
+
+<div id="boot" class="boot"><span class="spin"></span><div>Loading…</div></div>
+
+<!-- ============ SIGN IN / SIGN UP / FORGOT (hidden until the visitor asks for it) ============ -->
+<section id="auth" class="card auth hide">
+ <h2 id="aTitle">Welcome back</h2>
+ <p class="sub" id="aSub">Sign in to read and download your chapters.</p>
+ <div class="seg" id="seg"><button type="button" id="segPh" data-t="ph" class="hide">📱 Mobile OTP</button><button type="button" data-t="in" class="on">Email</button><button type="button" data-t="up">Create account</button></div>
+
+ <!-- mobile number + OTP (shown only when SMS is set up on the server) -->
+ <form id="f_ph" class="hide" onsubmit="phVerify(event)">
+  <div id="ph_s1">
+   <label for="ph_no">Mobile number</label>
+   <div class="inline"><span class="cc">+91</span><input id="ph_no" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national" placeholder="10-digit number">
+    <button class="btn btn-outline" type="button" onclick="phSend(this)">Send OTP</button></div>
+   <p class="muted small" style="margin-top:6px">A 6-digit code comes by SMS. Valid for 5 minutes.</p>
+   <label for="ph_code">OTP</label><input id="ph_code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456">
+  </div>
+  <div id="ph_s2" class="hide">
+   <p class="muted small">✅ Mobile verified. One last step: your name and email (for receipts and password recovery).</p>
+   <label for="ph_name">Full name</label><input id="ph_name" autocomplete="name" placeholder="Your name">
+   <label for="ph_email">Email</label><input id="ph_email" type="email" autocomplete="email" placeholder="you@example.com">
+   <label class="chk"><input id="ph_promo" type="checkbox"><span>Email me about new tests, offers and discount coupons (you can unsubscribe any time)</span></label>
+  </div>
+  <button id="ph_go" class="btn btn-primary block" type="submit">Verify &amp; sign in</button>
+  <div class="linkrow"><a onclick="tab('in')">Use email and password instead</a></div>
+ </form>
+
+ <form id="f_in" onsubmit="signin(event)">
+  <label for="si_email">Email</label><input id="si_email" type="email" autocomplete="email" placeholder="you@example.com">
+  <label for="si_pw">Password</label>
+  <div class="pw"><input id="si_pw" type="password" autocomplete="current-password" placeholder="Your password"><span onclick="tg_('si_pw',this)">Show</span></div>
+  <button class="btn btn-primary block" type="submit">Sign in</button>
+  <div class="linkrow"><a onclick="tab('fg')">Forgot password?</a><a onclick="tab('up')">New here? Create account</a></div>
+ </form>
+
+ <form id="f_up" class="hide" onsubmit="signup(event)">
+  <label for="su_name">Full name</label><input id="su_name" autocomplete="name" placeholder="Your name">
+  <label for="su_email">Email</label><input id="su_email" type="email" autocomplete="email" placeholder="you@example.com">
+  <label for="su_pw">Password</label>
+  <div class="pw"><input id="su_pw" type="password" autocomplete="new-password" placeholder="At least 6 characters"><span onclick="tg_('su_pw',this)">Show</span></div>
+  <label class="chk"><input id="su_promo" type="checkbox"><span>Email me about new tests, offers and discount coupons (you can unsubscribe any time)</span></label>
+  <button class="btn btn-primary block" type="submit">Create account</button>
+  <div class="linkrow"><span class="muted">Already registered?</span><a onclick="tab('in')">Sign in</a></div>
+ </form>
+
+ <form id="f_fg" class="hide" onsubmit="reset(event)">
+  <label for="fg_email">Registered email</label>
+  <div class="inline"><input id="fg_email" type="email" placeholder="you@example.com"><button class="btn btn-outline" type="button" onclick="forgot(this)">Send code</button></div>
+  <p class="muted small" style="margin-top:6px">The code goes to your email and linked Telegram. Valid for 10 minutes.</p>
+  <label for="fg_code">6-digit code</label><input id="fg_code" inputmode="numeric" maxlength="6" placeholder="123456">
+  <label for="fg_pw">New password</label>
+  <div class="pw"><input id="fg_pw" type="password" autocomplete="new-password" placeholder="At least 6 characters"><span onclick="tg_('fg_pw',this)">Show</span></div>
+  <button class="btn btn-primary block" type="submit">Set new password</button>
+  <div class="linkrow"><a onclick="tab('in')">← Back to sign in</a></div>
+ </form>
+
+ <div id="amsg" class="msg"></div>
+</section>
+
+<!-- ============ HOME: intro, tabs, payment panel, study material, mock tests ============ -->
+<div id="home">
+<section class="card intro" id="rulesCard">
+  <h2>Online Test Rules</h2>
+  <p>Please read these rules carefully before you start a timed mock test for HS, NEET, JEE, BS / MS / GATE or job exams.</p>
+  <ul>
+    <li>Choose your category and open the test you want. Free tests start straight away; the others unlock after a one-time payment (per test, or Full Access for all).</li>
+    <li>Have a coupon code? Enter it in the payment box before you pay to get your discount.</li>
+    <li>Each test is timed. The timer starts when you click <strong>Start Test</strong> and keeps running even if you switch tabs or lose your connection.</li>
+    <li>Use a stable internet connection and do not refresh or close the page during the test, as your progress may be lost.</li>
+    <li>You can move between questions, mark them for review and change your answers until you submit.</li>
+    <li>The test is submitted automatically when the time is up. Answers you have already selected will be counted.</li>
+    <li>Marks are given as shown at the start of each test. Negative marking applies only where the test says so (for example NEET, JEE and GATE).</li>
+    <li>Do not use books, notes, calculators (unless allowed) or any other help if you want an honest score.</li>
+    <li>Your score, correct answers and solutions are shown after you submit. Once you have bought a test you can <strong>retake</strong> it to practise and improve; your best score is shown, and only the first attempt counts for ranking.</li>
+    <li><strong>Reward:</strong> complete 4 different mock tests in one category and get 1 mock test of that category free.</li>
+    <li>Paid tests are for your personal use only. Sharing your login or copying questions is not allowed.</li>
+  </ul>
+</section>
+
+ <div id="viewTabs" class="chips hide" style="margin:16px 2px 0">
+  <button class="chip on" data-v="study">📚 Study material</button>
+  <button class="chip" data-v="tests">📝 Mock tests</button>
+ </div>
+
+
+ <!-- payment panel (shared by chapters and mock tests) -->
+ <section id="pay" class="card pay hide">
+  <div class="pay-head">
+   <div><div class="eyebrow">Complete your purchase</div><h3 id="ptitle"></h3><div class="muted small" id="pdesc"></div></div>
+   <div><div class="amount">₹<span id="pr"></span></div><div class="pold" id="pold"></div></div>
+  </div>
+
+  <!-- coupon -->
+  <div class="cp">
+   <b>Have a coupon code?</b>
+   <div class="inline"><input id="cp_code" placeholder="Enter coupon code" autocomplete="off" autocapitalize="characters" onkeydown="if(event.key==='Enter'){event.preventDefault();applyCoupon($('cpBtn'));}">
+    <button id="cpBtn" class="btn btn-outline" type="button" onclick="applyCoupon(this)">Apply</button></div>
+   <div id="cpmsg" class="msg"></div>
+  </div>
+
+  <!-- A. instant payment through the gateway: opens PhonePe / GPay / Paytm, comes back, unlocks automatically -->
+  <div id="gwBox" class="gw hide">
+   <a id="gwBtn" class="btn btn-primary block big-pay dis" target="_blank" rel="noopener">Preparing secure payment…</a>
+   <div class="gw-apps"><span>PhonePe</span><span>Google Pay</span><span>Paytm</span><span>Any UPI app</span><span>Cards</span><span>Netbanking</span></div>
+   <ol class="gw-steps">
+    <li>Tap <b>Pay</b>. A secure Razorpay page opens with the amount already fixed.</li>
+    <li>Choose your UPI app and approve with your UPI PIN.</li>
+    <li>Come back to this page. Your chapter unlocks <b>automatically</b>, no transaction ID needed.</li>
+   </ol>
+   <div id="gwmsg" class="msg"></div>
+  </div>
+
+  <!-- Telegram confirmation (optional) -->
+  <div class="steps"><div class="step"><div class="sn">✓</div><div>
+   <b>Get the receipt on Telegram <span class="muted small" style="font-weight:500">(optional)</span></b>
+   <div id="tgbox"></div>
+  </div></div></div>
+  <div class="pay-foot">
+   <span class="muted small">Trouble paying? <a id="fullLink" target="_blank" rel="noopener">Open this page in a new tab</a></span>
+   <button class="btn btn-outline sm" onclick="closePay()">Cancel</button>
+  </div>
+ </section>
+
+
+ <!-- STUDY MATERIAL (signed-in only) -->
+ <section id="app" class="hide">
+ <div id="plansWrap">
+  <div class="sec-head"><h2>Choose your access</h2><span class="muted">One-time payment · UPI, card or netbanking · no subscription</span></div>
+  <div class="plans">
+   <div class="card plan">
+    <span class="tag">Per chapter</span>
+    <h3>Pay only for what you need</h3>
+    <div class="prices">
+     <div><b>₹<span id="vp"></span></b><small>View online</small></div>
+     <div><b>₹<span id="dp"></span></b><small>View + PDF download</small></div>
+    </div>
+    <p class="muted small">Pick any chapter from the list below.</p>
+   </div>
+   <div class="card plan featured">
+    <span class="tag">★ Best value</span>
+    <h3>Full Access</h3>
+    <div class="big">₹<span id="fp"></span> <small>one-time</small></div>
+    <ul class="feat">
+     <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Every chapter: view + download</li>
+     <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>All new content added later, included</li>
+     <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>HS, NEET, JEE, B.Sc. &amp; job-exam material</li>
+    </ul>
+    <button id="fullBtn" class="btn btn-gold block" onclick="buyAll()">Get Full Access</button>
+   </div>
+  </div>
+ </div>
+
+
+  <div id="catBox">
+   <div class="sec-head">
+    <div><h2>Choose a category</h2><span class="muted" id="catCount"></span></div>
+    <button class="btn btn-outline sm" onclick="refreshAll(this)">
+   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Refresh</button>
+   </div>
+   <div id="cats" class="cat-grid"></div>
+  </div>
+ <!-- STUDY MATERIAL: chapters -->
+ <div id="chapBox" class="hide">
+  <button class="btn btn-outline sm back" onclick="closeCat()">← All categories</button>
+  <div class="sec-head">
+   <div><h2 id="catTitle">Chapters</h2><span class="muted" id="count"></span></div>
+   <button class="btn btn-outline sm" onclick="refreshAll(this)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Refresh</button>
+  </div>
+  <div class="toolbar">
+   <div class="search">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" placeholder="Search chapters…" oninput="draw()">
+   </div>
+   <div class="chips" id="chips">
+    <button class="chip on" data-f="all">All</button>
+    <button class="chip" data-f="mine">Unlocked</button>
+    <button class="chip" data-f="locked">Locked</button>
+   </div>
+  </div>
+  <div id="list" class="card list"></div>
+  <div id="dmsg" class="msg"></div>
+  <div id="chapCourses" class="cbox"></div>
+ </div>
+
+
+ <section id="viewer" class="card viewer hide">
+  <div class="vbar"><div><b id="vtitle"></b><span id="vstat" class="muted"></span></div>
+   <button class="btn btn-outline sm" onclick="closeViewer()">✕ Close</button></div>
+  <div id="pages" oncontextmenu="return false"></div>
+ </section>
+
+ </section>
+
+ <!-- MOCK TESTS: visible to everyone, signed in or not -->
+ <div id="testsBox">
+  <div class="sec-head" style="margin-top:24px">
+   <div><h2>Mock tests</h2><span class="muted">Timed · 1 minute per question · answers, hints and advice after you submit · retake anytime after you buy</span></div>
+   <button class="btn btn-outline sm" onclick="refreshAll(this)">
+   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Refresh</button>
+  </div>
+  <div id="tcats" class="cat-grid"></div>
+  <div id="tsubBox" class="hide">
+   <button class="btn btn-outline sm back" onclick="closeTCat()">← All categories</button>
+   <div class="sec-head" style="margin-top:12px"><div><h2 id="tsubTitle"></h2><span class="muted">Choose an exam</span></div></div>
+   <div id="tRewards0"></div>
+   <div id="tsubs" class="cat-grid"></div>
+  </div>
+  <div id="tlistBox" class="hide">
+   <button class="btn btn-outline sm back" onclick="closeTList()">← Back</button>
+   <div class="sec-head" style="margin-top:12px"><div><h2 id="tTitle"></h2></div></div>
+   <div id="tRewards"></div>
+   <div id="tCourses" class="cbox"></div>
+   <div id="tests" class="card list"></div>
+  </div>
+ </div>
+
+ <!-- VIDEO COURSES & BOOKS (everyone) -->
+ <div id="coursesBox" class="hide">
+  <div class="sec-head" style="margin-top:28px"><div><h2>Video courses &amp; books</h2><span class="muted">Watch or buy on Udemy / YouTube. Use the coupon code for the offer price.</span></div></div>
+  <div id="allCourses" class="cgrid"></div>
+ </div>
+
+ <!-- EMAIL OFFERS (signed-in only) -->
+ <section id="promoCard" class="card promo hide">
+  <label class="chk"><input id="promoChk" type="checkbox" onchange="setPromo(this)"><span>Email me when new tests, offers and discount coupons are announced</span></label>
+  <div id="phLink" class="phlink hide">
+   <b class="small">📱 Mobile number for OTP sign-in: <span id="phNow" class="muted"></span></b>
+   <div class="inline" style="margin-top:8px"><span class="cc">+91</span><input id="lk_no" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit number">
+    <button class="btn btn-outline sm" type="button" onclick="lkSend(this)">Send OTP</button></div>
+   <div class="inline" style="margin-top:8px"><input id="lk_code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="6-digit OTP">
+    <button class="btn btn-primary sm" type="button" onclick="lkVerify(this)">Verify</button></div>
+   <div id="lkmsg" class="msg"></div>
+  </div>
+ </section>
+
+ <!-- REVIEWS: everyone can read, signed-in students can write -->
+ <div id="reviewsBox">
+  <div class="sec-head" style="margin-top:28px">
+   <div><h2>Student reviews</h2><span class="muted" id="rvSum"></span></div>
+  </div>
+  <div id="rvFormCard" class="card rvform hide">
+   <b id="rvFormTitle">Write a review</b>
+   <div class="muted small">How was your experience with our tests and study material?</div>
+   <div class="stars" id="stars"></div>
+   <textarea id="rv_text" maxlength="600" placeholder="Share a few words (optional, up to 600 characters)"></textarea>
+   <button class="btn btn-primary" onclick="sendReview(this)">Submit review</button>
+   <div id="rvmsg" class="msg"></div>
+  </div>
+  <div id="rvGuest" class="card rvform hide">
+   <b>Share your experience</b>
+   <div class="muted small">Sign in to write a review.</div>
+   <button class="btn btn-primary sm" onclick="openAuth('Please sign in or create an account to write a review.')">Sign in to review</button>
+  </div>
+  <div id="rvList" class="card list"></div>
+ </div>
+</div>
+
+<!-- ============ MOCK TEST SCREEN ============ -->
+<section id="exam" class="card exam hide">
+ <div id="examBody">
+  <div class="ex-head"><b id="qprog"></b><span class="timer" id="timer">--:--</span></div>
+  <div id="qtext" class="qtext"></div>
+  <div id="qimg"></div>
+  <div id="qopts"></div>
+  <div class="mt-nav">
+   <button class="btn btn-outline sm" onclick="goQ(-1)">◀ Prev</button>
+   <button class="btn btn-outline sm" onclick="goQ(1)">Next ▶</button>
+   <button class="btn btn-outline sm" onclick="clearA()">Clear answer</button>
+  </div>
+  <div id="pal" class="pal"></div>
+  <button id="subbtn" class="btn btn-primary block" onclick="submitClick()">Submit test</button>
+  <div id="exmsg" class="msg"></div>
+  <button id="exback" class="btn btn-outline hide" onclick="exitExam()">Back to mock tests</button>
+ </div>
+ <div id="resBody" class="hide"></div>
+</section>
+
+<footer class="foot">
+ <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Secure payment by Razorpay</span>
+ <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Instant unlock with online payment</span>
+ <span id="visWrap" class="hide">👁 <span id="vis"></span> visits</span>
+</footer>
+</div></main>
+<div id="site-footer"></div>
+<div id="toast"></div>
+
+<script>
+let TOKEN=null, CUR=null, ME=null, LIST=[], FILTER='all', ORDER=null, POLL=0;
+let VIEW='study', LOADED=false, SCAT=null, TESTS=[], TCATS=[], TCAT=null;
+let COUPON=null, RATING=0;
+let COURSES=[], REW={}, EVERY=4, TSUB=null, TSUBS={};
+try{TOKEN=localStorage.getItem('qt')}catch(e){}
+const $=id=>document.getElementById(id);
+const ICON={
+ eye:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+ dl:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"/></svg>',
+ tg:'<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.8 19c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.8-7.9c.4-.3-.1-.5-.6-.2L6.7 12.9l-4.6-1.4c-1-.3-1-1 .2-1.5l18-6.9c.8-.3 1.6.2 1.6 1.2z"/></svg>'
+};
+
+/* ---------- helpers ---------- */
+// Your Apps Script web app address (Deploy > Manage deployments > Web app URL, ends with /exec)
+const API_URL=(window.EP_SITE&&EP_SITE.api)||'https://script.google.com/macros/s/AKfycbzzheLqofsqbzJ055T0IqyfWw91iPA4QEncukMJ1viablxIVtdB6SmLLq88Ml2_qqHy/exec';
+// Read-only answers saved in the browser, so the next visit shows the page at once and then refreshes it.
+const SAVED={boot:1,me:1,list:1,tests:1,reviews:1,courses:1};
+let USE_SAVED=false;
+const savedKey=a=>'c_'+a+'|'+(TOKEN||'');
+function savedGet(a){try{const s=localStorage.getItem(savedKey(a));return s?JSON.parse(s):null;}catch(e){return null;}}
+function savedClear(){try{Object.keys(localStorage).filter(k=>k.indexOf('c_')===0).forEach(k=>localStorage.removeItem(k));}catch(e){}}
+async function call(a,p){
+  if(USE_SAVED&&SAVED[a]){const s=savedGet(a); if(s) return s;}
+  let r;
+  try{
+    const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({api:a,p:p||{},token:TOKEN})});
+    r=await res.json();
+  }catch(e){ return {ok:false,error:'Network problem. Check your internet connection and try again.'}; }
+  r=r||{ok:false,error:'No response'};
+  if(SAVED[a]&&r.ok) try{localStorage.setItem(savedKey(a),JSON.stringify(r));}catch(e){}
+  return r;
+}
+function say(el,t,good){el.textContent=t||'';el.className='msg'+(good?' ok':'');}
+let tT;
+function toast(t,err){const x=$('toast');x.textContent=t;x.className='show'+(err?' err':'');clearTimeout(tT);tT=setTimeout(()=>x.className='',3200);}
+async function busy(btn,fn){
+  if(!btn) return fn();
+  const h=btn.innerHTML; btn.disabled=true; btn.innerHTML='<span class="spin"></span>'+btn.textContent.trim();
+  try{return await fn();} finally{btn.disabled=false; btn.innerHTML=h;}
+}
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+function mkBtn(label,cls,icon,fn){const b=el('button','btn '+cls);b.innerHTML=icon||'';b.append(label);b.onclick=()=>fn(b);return b;}
+function tg_(id,s){const i=$(id);i.type=i.type==='password'?'text':'password';s.textContent=i.type==='password'?'Show':'Hide';}
+function show(id,on){$(id).classList.toggle('hide',!on);}
+const rs=n=>Number(n).toLocaleString('en-IN');
+
+/* ---------- Study material / Mock tests: both sections are always on the page; the tabs just jump to them ---------- */
+function applyView(){
+  const signed=!!ME, hasCh=signed&&(!LOADED||LIST.length>0);
+  if(!hasCh&&VIEW==='study') VIEW='tests';
+  show('viewTabs',hasCh);
+  [...$('viewTabs').children].forEach(b=>b.classList.toggle('on',b.dataset.v===VIEW));
+  show('app',hasCh&&VIEW==='study');
+  show('testsBox',!hasCh||VIEW==='tests');
+  show('plansWrap',signed&&!ME.paid);   // price panel: never for Full Access members
+  show('rulesCard',!hasCh||VIEW==='tests');
+}
+function setView(v){
+  VIEW=v; closeViewer(); applyView();
+  if(location.hash!=='#'+v) history.replaceState(null,'','#'+v);
+  $('viewTabs').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('viewTabs').addEventListener('click',e=>{if(e.target.dataset.v)setView(e.target.dataset.v);});
+
+/* ---------- auth screens ---------- */
+const AUTH_TXT={ph:['Sign in with mobile','Get a one-time code by SMS. No password needed.'],
+                in:['Welcome back','Sign in to read and download your chapters.'],
+                up:['Create your account','Takes 30 seconds. Then buy chapters or get full access.'],
+                fg:['Reset your password','We will send a 6-digit code to your email and Telegram.']};
+function tab(t){
+  ['ph','in','up','fg'].forEach(x=>show('f_'+x,x===t));
+  if(t==='ph'){ PHT=null; show('ph_s1',1); show('ph_s2',0); $('ph_go').textContent='Verify & sign in'; }
+  $('aTitle').textContent=AUTH_TXT[t][0]; $('aSub').textContent=AUTH_TXT[t][1];
+  show('seg',t!=='fg');
+  [...$('seg').children].forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  say($('amsg'),'');
+}
+$('seg').addEventListener('click',e=>{if(e.target.dataset.t)tab(e.target.dataset.t);});
+
+/* Visitors who are not signed in: they see the list of mock tests; the sign-in card opens on demand */
+function showAuth(){
+  show('boot',0); show('userbox',0); show('exam',0); show('home',1);
+  show('auth',0); show('signinTop',1); show('promoCard',0);
+  applyView(); loadTests(); loadReviews();
+  if(location.hash==='#study') openAuth('Sign in to open your study material.');
+}
+function openAuth(msg){
+  show('auth',1);
+  if(msg) say($('amsg'),msg,1);
+  $('auth').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+async function login(r){
+  if(!r.ok) return say($('amsg'),r.error);
+  TOKEN=r.token; try{localStorage.setItem('qt',TOKEN)}catch(e){}
+  await showApp();
+}
+async function signin(e){e.preventDefault();
+  await busy(e.submitter,async()=>login(await call('signin',{email:$('si_email').value,password:$('si_pw').value})));}
+async function signup(e){e.preventDefault();
+  await busy(e.submitter,async()=>login(await call('signup',{name:$('su_name').value,email:$('su_email').value,password:$('su_pw').value,promo:$('su_promo').checked})));}
+async function forgot(b){
+  if(!$('fg_email').value.trim()) return say($('amsg'),'Enter your registered email first.');
+  await busy(b,async()=>{await call('forgot',{email:$('fg_email').value});say($('amsg'),'If this email is registered, a code has been sent.',1);$('fg_code').focus();});
+}
+async function reset(e){e.preventDefault();
+  await busy(e.submitter,async()=>{
+    const r=await call('reset',{email:$('fg_email').value,code:$('fg_code').value,password:$('fg_pw').value});
+    if(r.ok){tab('in');$('si_email').value=$('fg_email').value;say($('amsg'),'Password changed. Please sign in.',1);} else say($('amsg'),r.error);
+  });
+}
+/* ---------- mobile number + OTP ---------- */
+let OTP=false, PHN='', PHT=null;
+const okNo=n=>/^[6-9]\d{9}$/.test(n);
+const digits=v=>String(v||'').replace(/\D/g,'').replace(/^(91|0)(?=\d{10}$)/,'');
+function cooldown(b,s){
+  b.disabled=true; b.textContent='Resend in '+s+'s';
+  const t=setInterval(()=>{ if(--s<=0){clearInterval(t);b.disabled=false;b.textContent='Resend OTP';} else b.textContent='Resend in '+s+'s'; },1000);
+}
+async function phSend(b){
+  const n=digits($('ph_no').value);
+  if(!okNo(n)) return say($('amsg'),'Enter a valid 10-digit mobile number.');
+  const sent=await busy(b,async()=>{
+    const r=await call('sendOtp',{phone:n});
+    if(!r.ok){ say($('amsg'),r.error); return false; }
+    PHN=n; PHT=null; say($('amsg'),'OTP sent to '+r.to+'.',1); $('ph_code').value=''; $('ph_code').focus(); return true;
+  });
+  if(sent) cooldown(b,60);
+}
+async function phVerify(e){
+  e.preventDefault();
+  const b=$('ph_go');
+  if(PHT) return busy(b,async()=>login(await call('otpSignup',{phone:PHN,ticket:PHT,
+    name:$('ph_name').value,email:$('ph_email').value,promo:$('ph_promo').checked})));
+  if(!PHN||digits($('ph_no').value)!==PHN) return say($('amsg'),'Tap "Send OTP" first.');
+  if(!/^\d{6}$/.test($('ph_code').value.trim())) return say($('amsg'),'Enter the 6-digit OTP.');
+  await busy(b,async()=>{
+    const r=await call('verifyOtp',{phone:PHN,code:$('ph_code').value});
+    if(!r.ok) return say($('amsg'),r.error);
+    if(r.needProfile){
+      PHT=r.ticket; show('ph_s1',0); show('ph_s2',1); say($('amsg'),'');
+      setTimeout(()=>{ $('ph_go').textContent='Create account'; $('ph_name').focus(); },0);
+      return;
+    }
+    login(r);
+  });
+}
+/* signed-in student adds / changes the mobile number used for OTP sign-in */
+let LKN='';
+async function lkSend(b){
+  const n=digits($('lk_no').value);
+  if(!okNo(n)) return say($('lkmsg'),'Enter a valid 10-digit mobile number.');
+  const sent=await busy(b,async()=>{
+    const r=await call('sendOtp',{phone:n});
+    if(!r.ok){ say($('lkmsg'),r.error); return false; }
+    LKN=n; say($('lkmsg'),'OTP sent to '+r.to+'.',1); $('lk_code').focus(); return true;
+  });
+  if(sent) cooldown(b,60);
+}
+async function lkVerify(b){
+  if(!LKN) return say($('lkmsg'),'Tap "Send OTP" first.');
+  await busy(b,async()=>{
+    const r=await call('verifyOtp',{phone:LKN,code:$('lk_code').value});
+    if(!r.ok) return say($('lkmsg'),r.error);
+    ME.phone=r.phone; $('phNow').textContent=r.phone; $('lk_no').value=''; $('lk_code').value=''; LKN='';
+    say($('lkmsg'),'Done. You can now sign in with this mobile number and an OTP.',1);
+  });
+}
+
+async function signout(b){
+  await busy(b,()=>call('signout'));
+  savedClear();
+  TOKEN=null; ME=null; LOADED=false; VIEW='study'; LIST=[]; SCAT=null; TCAT=null; TSUB=null; REW={}; try{localStorage.removeItem('qt')}catch(e){}
+  closeViewer(); closePay(); clearInterval(TIMER); show('exam',0); tab(OTP?'ph':'in'); showAuth();
+}
+
+/* ---------- boot ---------- */
+let OTP_TAB=false;
+async function init(){
+  let first=false;
+  try{first=!sessionStorage.getItem('v');sessionStorage.setItem('v','1')}catch(e){}
+  const old=savedGet('boot');                       // last visit's data: show the page immediately
+  if(old){ USE_SAVED=true; try{ await start(old,false); }catch(e){} USE_SAVED=false; }
+  const b=await call('boot',{count:first});         // then the live data from the server
+  if(!b.ok && old) return toast('Showing saved data. '+(b.error||''),1);
+  await start(b,true);
+}
+async function start(b,live){
+  if(b.visits!=null){$('vis').textContent=b.visits;show('visWrap',1);}
+  OTP=!!b.otp; show('segPh',OTP);
+  if(OTP&&!OTP_TAB){ tab('ph'); OTP_TAB=true; }      // mobile OTP becomes the default sign-in when SMS is set up
+  if(TOKEN && b.me && b.me.ok){ await showApp(b.me,b.list); if(live){ const p=pending(); if(p&&p.type==='rzp') watchOrder(p.order); } }
+  else{ if(live&&TOKEN){TOKEN=null;try{localStorage.removeItem('qt')}catch(e){}} showAuth(); }
+}
+
+/* ---------- signed-in area ---------- */
+async function showApp(me,list){
+  const m=me||await call('me');
+  if(!m||!m.ok){TOKEN=null;try{localStorage.removeItem('qt')}catch(e){};return showAuth();}
+  ME=m; applyMe();
+  show('boot',0); show('auth',0); show('home',1); show('userbox',1); show('signinTop',0); show('promoCard',1);
+  if(!list){$('list').innerHTML='<div class="sk"></div><div class="sk"></div><div class="sk"></div>';}
+  renderList(list||await call('list'));
+  loadTests(); loadReviews();
+}
+function applyMe(){
+  $('nm').textContent=ME.name; $('av').textContent=String(ME.name||'?').trim().charAt(0).toUpperCase();
+  $('st').textContent=ME.paid?'★ Full Access member':'Per-chapter access';
+  $('vp').textContent=ME.viewPrice; $('dp').textContent=ME.dlPrice;
+  $('fp').textContent=rs(ME.fullPrice);
+  $('fullLink').href=location.href.split('#')[0];
+  $('promoChk').checked=!!ME.promo;
+  show('phLink',!!ME.otp); $('phNow').textContent=ME.phone||'not added yet';
+  applyView();
+  const fb=$('fullBtn');
+  fb.disabled=!!ME.pendingAll;
+  fb.textContent=ME.pendingAll?'⏳ Payment pending verification':'Get Full Access';
+}
+async function refreshAll(b){
+  await busy(b,async()=>{
+    if(!ME){ await loadTests(); loadReviews(); return toast('Updated'); }     // visitor: just reload the test list
+    const m=await call('me'); if(!m.ok) return showAuth();
+    ME=m; applyMe(); renderList(await call('list')); loadTests(); loadReviews(); toast('Updated');
+  });
+}
+
+function renderList(l){
+  if(!l||!l.ok){$('cats').innerHTML='';$('cats').append(Object.assign(el('div','card empty',(l&&l.error)||'Could not load chapters.'),{style:'grid-column:1/-1'}));return;}
+  LIST=l.items; LOADED=true;
+  if(SCAT&&!LIST.some(x=>catOf(x)===SCAT)) SCAT=null;
+  drawCats(); if(SCAT) draw(); syncStudy(); applyView(); renderCourseSlots();
+}
+const catOf=it=>it.category||'Other';
+function catCard(n,name,meta,label,fn){
+  const c=el('div','card cat'+(fn?'':' off'));
+  c.append(el('div','num',String(n).padStart(2,'0')),el('h3','',name),el('div','cm',meta));
+  const b=mkBtn(fn?label+' →':'Coming soon','btn-primary sm',null,fn||(()=>{})); if(!fn) b.disabled=true;
+  c.append(b); return c;
+}
+function drawCats(){
+  const box=$('cats'); box.innerHTML='';
+  const names=[]; LIST.forEach(it=>{const c=catOf(it); if(names.indexOf(c)<0) names.push(c);});
+  $('catCount').textContent=names.length+' categor'+(names.length===1?'y':'ies');
+  if(!names.length){box.append(Object.assign(el('div','card empty','No content added yet. Please check back soon.'),{style:'grid-column:1/-1'}));return;}
+  names.forEach((nm,i)=>{
+    const its=LIST.filter(x=>catOf(x)===nm), un=its.filter(x=>x.level!=='none').length;
+    box.append(catCard(i+1,nm,its.length+' chapter'+(its.length===1?'':'s')+' · '+un+' unlocked','View chapters',()=>openCat(nm)));
+  });
+}
+function syncStudy(){ show('catBox',!SCAT); show('chapBox',!!SCAT); $('catTitle').textContent=SCAT||'Chapters'; }
+function openCat(nm){ SCAT=nm; FILTER='all'; $('q').value='';
+  [...$('chips').children].forEach(c=>c.classList.toggle('on',c.dataset.f==='all'));
+  draw(); renderCourseSlots(); syncStudy(); $('chapBox').scrollIntoView({behavior:'smooth',block:'start'}); }
+function closeCat(){ SCAT=null; closeViewer(); drawCats(); renderCourseSlots(); syncStudy(); $('app').scrollIntoView({behavior:'smooth',block:'start'}); }
+const BADGE={full:['b-full','Full Access'],free:['b-free','Free'],freeview:['b-free','Free to view'],
+             owned:['b-own','Owned'],viewonly:['b-view','View unlocked'],locked:['b-lock','Locked']};
+function draw(){
+  const q=$('q').value.trim().toLowerCase(), box=$('list'); box.innerHTML='';
+  const CL=LIST.filter(i=>catOf(i)===SCAT);
+  const unlocked=CL.filter(i=>i.level!=='none').length;
+  $('count').textContent=CL.length+' chapters · '+unlocked+' unlocked';
+  const items=CL.map((it,i)=>Object.assign({n:i+1},it)).filter(it=>{
+    if(FILTER==='mine'&&it.level==='none') return false;
+    if(FILTER==='locked'&&it.level!=='none') return false;
+    return (it.title+' '+it.section).toLowerCase().includes(q);
+  });
+  if(!CL.length) return box.append(el('div','empty','No chapters in this category yet.'));
+  if(!items.length) return box.append(el('div','empty','No chapters match your search.'));
+  items.forEach(it=>{
+    const r=el('div','row'+(it.level==='none'?' locked':''));
+    const mid=el('div'); mid.append(el('div','title',it.title));
+    const meta=el('div','meta');
+    if(it.section&&it.section!==SCAT) meta.append(el('span','',it.section));
+    const bd=BADGE[it.tag]||BADGE.locked; meta.append(el('span','badge '+bd[0],bd[1]));
+    if(it.pending) meta.append(el('span','badge b-pend','⏳ '+(it.pending==='download'?'Download':'View')+' payment pending'));
+    mid.append(meta);
+    const act=el('div','actions');
+    if(it.level==='download'){
+      act.append(mkBtn('View','btn-primary',ICON.eye,()=>openView(it)),
+                 mkBtn('Download','btn-success',ICON.dl,b=>dl(it,b)));
+    }else if(it.level==='view'){
+      act.append(mkBtn('View','btn-primary',ICON.eye,()=>openView(it)),
+                 mkBtn('Download ₹'+it.dlPrice,'btn-outline',ICON.dl,()=>buy(it,'download',it.dlPrice)));
+    }else{
+      act.append(mkBtn('View ₹'+it.viewPrice,'btn-primary',ICON.eye,()=>buy(it,'view',it.viewPrice)),
+                 mkBtn('Download ₹'+it.dlPrice,'btn-outline',ICON.dl,()=>buy(it,'download',it.dlPrice)));
+    }
+    r.append(el('div','num',String(it.n).padStart(2,'0')),mid,act);
+    box.append(r);
+  });
+}
+$('chips').addEventListener('click',e=>{
+  if(!e.target.dataset.f) return;
+  FILTER=e.target.dataset.f;
+  [...$('chips').children].forEach(c=>c.classList.toggle('on',c===e.target));
+  draw();
+});
+
+/* ---------- payment ---------- */
+function setAmount(final,base){
+  $('pr').textContent=rs(final);
+  $('pold').textContent=(base!=null&&final<base)?'₹'+rs(base)+' → you save ₹'+rs(base-final):'';
+}
+function buy(it,level,amt){
+  CUR={id:it.id,level:level,title:it.title,amt:amt}; ORDER=null; POLL++; COUPON=null;
+  $('cp_code').value=''; say($('cpmsg'),'');
+  $('ptitle').textContent=it.title;
+  $('pdesc').textContent=level==='all'?'Full access · every chapter, view + download, including future content'
+                        :level==='test'?'Timed mock test · answers and hints appear after you submit · retake anytime':level==='download'?(it.level==='view'?'Upgrade to view + PDF download':'View online + PDF download')
+                        :'View online only';
+  setAmount(amt,null);
+  say($('gwmsg'),'');
+  if(it.pending) say($('gwmsg'),'An older payment for this is still waiting for approval.');
+
+  const t=$('tgbox'); t.innerHTML='';
+  if(ME.linked) t.append(Object.assign(el('span','tg-ok'),{innerHTML:ICON.tg+' Telegram linked. You will get the receipt there as soon as you pay.'}));
+  else{
+    t.append(el('p','muted small','Link Telegram once to get a receipt message after every payment.'));
+    const b=mkBtn('Open @'+ME.bot,'btn-outline sm',ICON.tg,()=>window.open(ME.link,'_blank')); b.style.marginTop='8px'; t.append(b);
+  }
+
+  show('gwBox',1);
+  if(ME.gateway) prepareOrder();
+  else{ const b=$('gwBtn'); b.classList.add('dis'); b.removeAttribute('href'); b.textContent='Online payment coming soon';
+        say($('gwmsg'),'Payments are being set up. Please try again in a little while.'); }
+  show('pay',1); $('pay').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* coupon: check it on the server, show the new price, then prepare the order again with the code */
+async function applyCoupon(b){
+  if(!CUR) return;
+  const code=$('cp_code').value.trim(), want=CUR;
+  if(!code){
+    if(COUPON){ COUPON=null; setAmount(want.amt,null); say($('cpmsg'),'Coupon removed.'); if(ME.gateway) prepareOrder(); }
+    else say($('cpmsg'),'Enter a coupon code first.');
+    return;
+  }
+  await busy(b,async()=>{
+    const r=await call('coupon',{itemId:want.id,level:want.level,code:code});
+    if(CUR!==want) return;
+    if(!r.ok){
+      const had=!!COUPON; COUPON=null; setAmount(want.amt,null); say($('cpmsg'),r.error);
+      if(had&&ME.gateway) prepareOrder();
+      return;
+    }
+    COUPON={code:r.code,final:r.final,discount:r.discount};
+    setAmount(r.final,r.base);
+    say($('cpmsg'),'Coupon '+r.code+' applied. You save ₹'+rs(r.discount)+'.',1);
+    if(ME.gateway||r.final===0) prepareOrder();
+  });
+}
+async function prepareOrder(){
+  const b=$('gwBtn'), want=CUR, cp=COUPON;
+  b.onclick=null; b.classList.add('dis'); b.removeAttribute('href'); b.innerHTML='<span class="spin"></span>Preparing secure payment…';
+  // 100% coupon: nothing to pay, just unlock
+  if(cp&&cp.final===0){
+    b.textContent='Unlock free with coupon '+cp.code; b.classList.remove('dis');
+    b.onclick=async ev=>{
+      ev.preventDefault(); b.classList.add('dis');
+      const r=await call('createOrder',{itemId:want.id,level:want.level,coupon:cp.code});
+      if(!r.ok){ b.classList.remove('dis'); return say($('gwmsg'),r.error); }
+      onPaid();
+    };
+    return;
+  }
+  const r=await call('createOrder',{itemId:want.id,level:want.level,coupon:cp?cp.code:''});
+  if(CUR!==want||COUPON!==cp) return;            // user switched item or coupon meanwhile
+  if(!r.ok){ b.textContent='Online payment unavailable';
+    say($('gwmsg'),r.error+' · Tap Cancel and try again.'); return; }
+  ORDER=r.id; b.href=r.url; b.classList.remove('dis');
+  b.textContent='Pay ₹'+rs(r.amount)+' now';
+  b.onclick=()=>{ remember({type:'rzp',order:ORDER});
+    say($('gwmsg'),'Payment page opened. Finish paying, then return to this page. It will unlock by itself.',1);
+    watchOrder(ORDER); };
+}
+function buyAll(){ buy({id:'ALL',title:'Full Access – all content'},'all',ME.fullPrice); }
+function closePay(){show('pay',0);CUR=null;COUPON=null;POLL++;}
+
+/* remember what the customer is paying for, so we can pick up when they come back */
+function remember(o){ try{sessionStorage.setItem('pend',JSON.stringify(Object.assign({t:Date.now()},o)));}catch(e){} }
+function pending(){ try{const o=JSON.parse(sessionStorage.getItem('pend')||'null'); return o&&Date.now()-o.t<3*3600e3?o:null;}catch(e){return null;} }
+function forget(){ try{sessionStorage.removeItem('pend');}catch(e){} }
+
+async function watchOrder(id){
+  const job=++POLL;
+  for(let i=0;i<80 && job===POLL;i++){              // about 4 minutes
+    await new Promise(r=>setTimeout(r,i<10?3000:5000));
+    if(job!==POLL) return;
+    if(document.hidden) { i--; continue; }          // wait until the customer is back on this page
+    const r=await call('checkOrder',{id:id});
+    if(r.ok && r.paid){ forget(); onPaid(); return; }
+  }
+}
+async function onPaid(){
+  POLL++;
+  toast('✅ Payment received. Unlocked!');
+  if($('gwmsg')) say($('gwmsg'),'✅ Your purchase is unlocked.',1);
+  const m=await call('me'); if(m.ok){ME=m;applyMe();}
+  renderList(await call('list')); loadTests();
+  setTimeout(()=>{ if(!$('pay').classList.contains('hide')) closePay(); },2500);
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden || !ME) return;
+  const p=pending(); if(!p) return;
+  if(p.type==='rzp') watchOrder(p.order);
+});
+
+function b64(s){const b=atob(s),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+
+async function dl(it,b){
+  await busy(b,async()=>{
+    const r=await call('download',{id:it.id});
+    if(!r.ok) return toast(r.error,1);
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([b64(r.data)],{type:r.mime}));
+    a.download=r.name; document.body.append(a); a.click(); a.remove();
+    toast('Download started');
+  });
+}
+
+let VIEWJOB=0; const PDFS={};
+async function openView(it){
+  const job=++VIEWJOB;
+  $('vtitle').textContent=it.title; $('vstat').textContent='Loading…';
+  $('pages').innerHTML=''; show('viewer',1); $('viewer').scrollIntoView({behavior:'smooth',block:'start'});
+  const r=PDFS[it.id]||await call('view',{id:it.id});
+  if(job!==VIEWJOB) return;
+  if(!r.ok){ $('vstat').textContent=r.error; return; }
+  PDFS[it.id]=r;
+  try{
+    if(!window._pw){
+      const t=await (await fetch('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js')).text();
+      pdfjsLib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(new Blob([t],{type:'text/javascript'}));
+      window._pw=1;
+    }
+    const pdf=await pdfjsLib.getDocument({data:b64(r.data)}).promise;
+    const box=$('pages'), dpr=Math.min(window.devicePixelRatio||1,2);
+    const W=Math.max(320,box.clientWidth-28);
+    for(let n=1;n<=pdf.numPages;n++){
+      if(job!==VIEWJOB) return;
+      $('vstat').textContent='Rendering page '+n+' of '+pdf.numPages+'…';
+      const pg=await pdf.getPage(n), base=pg.getViewport({scale:1});
+      const vp=pg.getViewport({scale:Math.min(3,(W*dpr)/base.width)});
+      const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
+      const x=c.getContext('2d');
+      await pg.render({canvasContext:x,viewport:vp}).promise;
+      x.save(); x.globalAlpha=0.12; x.fillStyle='#000';
+      x.font='bold '+Math.round(c.width/26)+'px Arial'; x.rotate(-0.5);
+      const step=Math.round(c.width/5);
+      for(let y=0;y<c.height+c.width;y+=step) x.fillText(ME.email+'   '+ME.email,-c.width*0.15,y);
+      x.restore();
+      box.append(c);
+    }
+    $('vstat').textContent=pdf.numPages+' page'+(pdf.numPages>1?'s':'');
+  }catch(e){ $('vstat').textContent='Could not open this file. Make sure it is a PDF.'; }
+}
+function closeViewer(){VIEWJOB++;$('pages').innerHTML='';show('viewer',0);}
+
+/* ---------- email offers opt-in ---------- */
+async function setPromo(cb){
+  const on=cb.checked;
+  const r=await call('setPromo',{on:on});
+  if(!r.ok){ cb.checked=!on; return toast(r.error,1); }
+  ME.promo=on;
+  toast(on?'Done. You will get emails about new tests and offers.':'Offer emails turned off.');
+}
+
+/* ---------- reviews ---------- */
+function drawStars(){
+  const box=$('stars'); box.innerHTML='';
+  for(let i=1;i<=5;i++){
+    const b=el('button',i<=RATING?'on':'','★'); b.type='button'; b.title=i+' star'+(i>1?'s':'');
+    b.onclick=()=>{RATING=i; drawStars();}; box.append(b);
+  }
+}
+async function loadReviews(){
+  const r=await call('reviews');
+  if(!r.ok) return;
+  $('rvSum').textContent=r.count?('★ '+r.avg+' / 5 · '+r.count+' review'+(r.count===1?'':'s')):'Be the first to review';
+  show('rvFormCard',!!ME); show('rvGuest',!ME);
+  if(ME){
+    if(r.mine){
+      RATING=r.mine.rating; $('rv_text').value=r.mine.text;
+      $('rvFormTitle').textContent='Your review (you can edit it)';
+      if(r.mine.status!=='approved') say($('rvmsg'),'Your review is waiting for approval.',1);
+    }else if(!$('rvFormCard').dataset.touched){ RATING=0; $('rvFormTitle').textContent='Write a review'; }
+    drawStars();
+  }
+  const box=$('rvList'); box.innerHTML='';
+  if(!r.items.length){ box.append(el('div','empty','No reviews yet.')); return; }
+  r.items.forEach(v=>{
+    const row=el('div','rvrow'), top=el('div','rvtop');
+    top.append(el('b','',v.name), el('span','rvstars','★'.repeat(v.rating)+'☆'.repeat(5-v.rating)), el('span','muted small',v.date));
+    row.append(top);
+    if(v.text) row.append(el('div','rvtxt',v.text));
+    box.append(row);
+  });
+}
+async function sendReview(b){
+  if(!RATING) return say($('rvmsg'),'Please tap the stars to give a rating first.');
+  await busy(b,async()=>{
+    const r=await call('saveReview',{rating:RATING,text:$('rv_text').value});
+    if(!r.ok) return say($('rvmsg'),r.error);
+    say($('rvmsg'),r.pending?'Thank you! Your review will appear after approval.':'Thank you for your review!',1);
+    await loadReviews();
+  });
+}
+
+/* ---------- video courses / books ---------- */
+async function loadCourses(){
+  const r=await call('courses'); if(r.ok) COURSES=r.items||[];
+  renderCourseSlots();
+}
+function courseMatch(c,keys){
+  return c.applies.indexOf('ALL')>=0 || keys.some(k=>k&&c.applies.indexOf(String(k).trim().toUpperCase())>=0);
+}
+function copyCode(code){
+  try{ navigator.clipboard.writeText(code).then(()=>toast('Coupon '+code+' copied')).catch(()=>toast('Coupon code: '+code)); }
+  catch(e){ toast('Coupon code: '+code); }
+}
+function courseCard(c){
+  const d=el('div','card course');
+  d.append(el('span','badge b-view',c.type==='book'?'📖 Book':(c.platform||'Course')), el('div','ctitle',c.title));
+  if(c.description) d.append(el('div','muted small',c.description));
+  if(c.price!==null){
+    const pr=el('div','cprice');
+    if(c.mrp&&c.mrp>c.price) pr.append(el('s','','₹'+rs(c.mrp)));
+    pr.append(el('b','',c.price===0?'Free':'₹'+rs(c.price)));
+    d.append(pr);
+  }
+  if(c.coupon){
+    const cp=el('div','ccoupon'); cp.append('Coupon ',el('b','',c.coupon));
+    if(c.couponPrice!==null) cp.append(' → ₹'+rs(c.couponPrice));
+    cp.append(mkBtn('Copy','btn-outline sm',null,()=>copyCode(c.coupon)));
+    d.append(cp);
+  }
+  if(c.url){
+    const a=el('a','btn btn-primary sm block', c.type==='book'?'View book →':/youtube/i.test(c.platform)?'Watch on YouTube →':'View course →');
+    a.href=c.url; a.target='_blank'; a.rel='noopener'; d.append(a);
+  }
+  if(c.payUrl){
+    const p=el('a','btn btn-success sm block','💳 Pay'+(c.price?' ₹'+rs(c.price):'')+' securely (Razorpay) →');
+    p.href=c.payUrl; p.target='_blank'; p.rel='noopener'; d.append(p);
+  }
+  if(c.bookUrl){
+    const b=el('a','btn btn-gold sm block','📖 Order the book →');
+    b.href=c.bookUrl; b.target='_blank'; b.rel='noopener'; d.append(b);
+  }
+  return d;
+}
+function fillCourses(box,list,title){
+  if(!box) return;
+  box.innerHTML=''; if(!list.length) return;
+  if(title) box.append(el('h3','',title));
+  const g=el('div','cgrid'); list.forEach(c=>g.append(courseCard(c))); box.append(g);
+}
+function renderCourseSlots(){
+  const all=$('allCourses'); all.innerHTML=''; COURSES.forEach(c=>all.append(courseCard(c)));
+  show('coursesBox',COURSES.length>0);
+  fillCourses($('chapCourses'), SCAT?COURSES.filter(c=>courseMatch(c,[SCAT])):[], '🎓 Video lessons for this topic');
+  fillCourses($('tCourses'), TCAT?COURSES.filter(c=>courseMatch(c,[TCAT,TSUB])):[], '🎓 Learn before you test: video courses & books');
+}
+function renderResultCourses(r){
+  fillCourses($('resCourses'), COURSES.filter(c=>courseMatch(c,[r.cat,r.testId])), '🎓 Improve your score: recommended courses & books');
+}
+
+/* ---------- timed mock tests ---------- */
+let EX=null, TIMER=null, ANS={}, QI=0, ENDAT=0, CONF=false;
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function fmt(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+
+/* figures (pictures) in questions and options */
+function imgEl(src,cls){
+  const i=document.createElement('img');
+  i.src=src; i.className=cls; i.alt='Figure'; i.draggable=false; i.loading='eager';
+  i.oncontextmenu=()=>false;
+  return i;
+}
+function imgHtml(src,cls){
+  return src?'<img class="'+cls+'" src="'+esc(src)+'" alt="Figure" draggable="false" oncontextmenu="return false">':'';
+}
+
+async function loadTests(){
+  loadCourses();
+  const r=await call('tests');
+  if(!r.ok){const g=$('tcats'); g.innerHTML=''; g.append(Object.assign(el('div','card empty',r.error||'Could not load tests.'),{style:'grid-column:1/-1'})); show('tcats',1); show('tlistBox',0); return;}
+  TESTS=r.items; TCATS=(r.cats||[]).slice(); REW=r.rewards||{}; EVERY=r.every||4; TSUBS=r.subs||{};
+  TESTS.forEach(t=>{ if(TCATS.indexOf(t.cat)<0) TCATS.push(t.cat); });   // never hide a test
+  if(TCAT&&!TESTS.some(t=>t.cat===TCAT)) TCAT=null;
+  if(!TCAT||(TSUB&&!TESTS.some(t=>t.cat===TCAT&&t.sub===TSUB))) TSUB=null;
+  drawTests();
+}
+function drawTests(){
+  const g=$('tcats'); g.innerHTML='';
+  TCATS.forEach((nm,i)=>{
+    const its=TESTS.filter(t=>t.cat===nm), free=its.filter(t=>t.free).length, open=its.filter(t=>t.open).length;
+    const rw=REW[nm];
+    const meta=its.length?its.length+' test'+(its.length===1?'':'s')+' · '+(ME?open+' unlocked':free+' free')+
+      (rw&&rw.credits?' · 🎁 '+rw.credits+' free test'+(rw.credits>1?'s':'')+' to use':''):'No tests yet';
+    g.append(catCard(i+1,nm,meta,'View tests',its.length?()=>openTCat(nm):null));
+  });
+  const hasSubs=!!TCAT&&(TSUBS[TCAT]||[]).length>0, needSub=hasSubs&&!TSUB;
+  show('tcats',!TCAT); show('tsubBox',needSub); show('tlistBox',!!TCAT&&!needSub);
+  if(needSub) drawSubs();
+  if(TCAT&&!needSub) drawTestList();
+  renderCourseSlots();
+}
+function rewardBanner(){
+  const rw=REW[TCAT]||{progress:0,credits:0}, bn=el('div','card rwd');
+  if(!ME) bn.textContent='🎁 Complete '+EVERY+' different tests in this category and get 1 mock test free. Sign in to start.';
+  else if(rw.credits>0) bn.textContent='🎁 You have '+rw.credits+' free test'+(rw.credits>1?'s':'')+' in this category. Tap "Use free test" on any locked test.';
+  else bn.textContent='🎁 Reward progress: '+rw.progress+' / '+EVERY+' different tests completed. Finish '+EVERY+' and get 1 test free in this category.';
+  return bn;
+}
+function drawSubs(){
+  $('tsubTitle').textContent=TCAT;
+  const rb=$('tRewards0'); rb.innerHTML=''; rb.append(rewardBanner());
+  const g=$('tsubs'); g.innerHTML='';
+  const names=(TSUBS[TCAT]||[]).filter((nm,i,a)=>TESTS.some(t=>t.cat===TCAT&&t.sub===nm)||i<a.length-1);   // hide the catch-all when empty
+  names.forEach((nm,i)=>{
+    const its=TESTS.filter(t=>t.cat===TCAT&&t.sub===nm), free=its.filter(t=>t.free).length, open=its.filter(t=>t.open).length;
+    const meta=its.length?its.length+' test'+(its.length===1?'':'s')+' · '+(ME?open+' unlocked':free+' free'):'No tests yet';
+    g.append(catCard(i+1,nm,meta,'View tests',its.length?()=>openSub(nm):null));
+  });
+}
+function openTCat(nm){ TCAT=nm; TSUB=null; drawTests(); $('testsBox').scrollIntoView({behavior:'smooth',block:'start'}); }
+function openSub(nm){ TSUB=nm; drawTests(); $('testsBox').scrollIntoView({behavior:'smooth',block:'start'}); }
+function closeTCat(){ TCAT=null; TSUB=null; drawTests(); $('testsBox').scrollIntoView({behavior:'smooth',block:'start'}); }
+function closeTList(){ if(TSUB&&(TSUBS[TCAT]||[]).length){ TSUB=null; drawTests(); $('testsBox').scrollIntoView({behavior:'smooth',block:'start'}); } else closeTCat(); }
+async function redeem(id,b){
+  await busy(b,async()=>{
+    const r=await call('redeemFree',{testId:id});
+    if(!r.ok) return toast(r.error,1);
+    toast('🎁 Free test unlocked!'); await loadTests();
+  });
+}
+function drawTestList(){
+  const box=$('tests'); box.innerHTML=''; $('tTitle').textContent=TCAT+(TSUB?' · '+TSUB:'');
+  const rw=REW[TCAT]||{progress:0,credits:0}, rb=$('tRewards'); rb.innerHTML='';
+  rb.append(rewardBanner());
+  TESTS.filter(t=>t.cat===TCAT&&(!TSUB||t.sub===TSUB)).forEach(t=>{
+    const row=el('div','mt-row'), mid=el('div'), act=el('div','mt-act');
+    mid.append(el('div','mt-title',t.title));
+    mid.append(el('div','mt-meta',t.n+' questions · '+t.minutes+' min · '+t.max+' marks'+
+      (t.free?' · Free':'')+(t.tries?' · attempts '+t.tries+(t.maxTries?'/'+t.maxTries:''):'')+
+      (t.best!==null?' · best score '+t.best:'')+(!t.open&&!t.free?' · ₹'+t.price:'')));
+    const canStart=t.open&&(t.maxTries===0||t.tries<t.maxTries);
+    if(!ME){
+      act.append(mkBtn(t.free?'Sign in to start':'Sign in to buy ₹'+t.price,'btn-primary sm',null,
+        ()=>openAuth('Please sign in or create an account to continue.')));
+    }else if(!t.open){
+      if(t.pending) act.append(el('span','badge b-pend','⏳ Payment pending'));
+      else{
+        if(rw.credits>0) act.append(mkBtn('Use free test 🎁','btn-success sm',null,b=>redeem(t.id,b)));
+        act.append(mkBtn('Buy ₹'+t.price,rw.credits>0?'btn-outline sm':'btn-primary sm',null,()=>buy({id:'T:'+t.id,title:'Mock test: '+t.title,level:'none'},'test',t.price)));
+      }
+    }else{
+      // buyers can look at their last result AND take the test again
+      if(t.lastId) act.append(mkBtn('View result','btn-outline sm',null,b=>viewResult(t.lastId,b)));
+      if(canStart) act.append(mkBtn(t.tries?'Retake test':'Start test','btn-primary sm',null,b=>startTest(t.id,b)));
+      else if(!t.lastId) act.append(el('span','muted small','Attempts used'));
+      else act.append(el('span','muted small','All attempts used'));
+    }
+    row.append(mid,act); box.append(row);
+  });
+}
+
+async function startTest(id,b){
+  await busy(b,async()=>{
+    const r=await call('startTest',{testId:id});
+    if(!r.ok) return toast(r.error,1);
+    EX=r; QI=0; ANS={}; CONF=false;
+    try{ANS=JSON.parse(localStorage.getItem('ans_'+r.attemptId)||'{}')}catch(e){}
+    ENDAT=Date.now()+r.remaining*1000;
+    show('home',0); show('exam',1); show('examBody',1); show('resBody',0);
+    $('exmsg').textContent=''; show('exback',0); $('subbtn').disabled=false; $('subbtn').textContent='Submit test';
+    renderQ(); clearInterval(TIMER); TIMER=setInterval(tickTimer,1000); tickTimer();
+    $('exam').scrollIntoView({block:'start'});
+  });
+}
+function tickTimer(){
+  const left=Math.max(0,Math.round((ENDAT-Date.now())/1000));
+  $('timer').textContent='⏱ '+fmt(left); $('timer').classList.toggle('low',left<=60);
+  if(left<=0){ clearInterval(TIMER); finishTest(true); }
+}
+function saveLocal(){try{localStorage.setItem('ans_'+EX.attemptId,JSON.stringify(ANS))}catch(e){}}
+function renderQ(){
+  const q=EX.questions[QI];
+  $('qprog').textContent='Question '+(QI+1)+' of '+EX.questions.length;
+  $('qtext').textContent=q.q;
+  const qi=$('qimg'); qi.innerHTML='';
+  if(q.img) qi.append(imgEl(q.img,'qimg'));
+  const box=$('qopts'); box.innerHTML='';
+  ['A','B','C','D'].forEach(L=>{
+    const oi=(q.oi&&q.oi[L])||'';
+    if(!q.o[L] && !oi) return;
+    const lab=el('label','opt'+(ANS[q.no]===L?' sel':''));
+    const rb=document.createElement('input'); rb.type='radio'; rb.name='o'; rb.checked=(ANS[q.no]===L);
+    rb.onchange=()=>{ANS[q.no]=L; saveLocal(); renderQ();};
+    const body=el('div','obody');
+    body.append(document.createTextNode(L+'.'+(q.o[L]?' '+q.o[L]:'')));
+    if(oi) body.append(imgEl(oi,'oimg'));
+    lab.append(rb, body); box.append(lab);
+  });
+  const pal=$('pal'); pal.innerHTML='';
+  EX.questions.forEach((x,i)=>{
+    const b=el('button',(ANS[x.no]?'done ':'')+(i===QI?'cur':''),String(i+1));
+    b.onclick=()=>{QI=i; renderQ();}; pal.append(b);
+  });
+}
+function goQ(d){QI=Math.min(EX.questions.length-1,Math.max(0,QI+d)); renderQ();}
+function clearA(){delete ANS[EX.questions[QI].no]; saveLocal(); renderQ();}
+function submitClick(){
+  if(!CONF){
+    CONF=true; const n=EX.questions.filter(q=>!ANS[q.no]).length;
+    $('subbtn').textContent='Tap again to submit'+(n?' ('+n+' unanswered)':'');
+    setTimeout(()=>{CONF=false;$('subbtn').textContent='Submit test';},4000); return;
+  }
+  CONF=false; finishTest(false);
+}
+async function finishTest(auto){
+  clearInterval(TIMER); $('subbtn').disabled=true;
+  say($('exmsg'),auto?'Time is up! Submitting…':'Submitting…',1);
+  const r=await call('submitTest',{attemptId:EX.attemptId,answers:ANS});
+  if(!r.ok){
+    if(/not found/i.test(r.error||'')){        // retrying can never fix this, so send the student back
+      try{localStorage.removeItem('ans_'+EX.attemptId)}catch(e){}
+      say($('exmsg'),'This attempt was not found on the server, so it cannot be submitted. Please go back and start the test again.');
+      show('exback',1); return;
+    }
+    say($('exmsg'),r.error+' – tap Submit to try again.'); $('subbtn').disabled=false; $('subbtn').textContent='Submit test'; return;
+  }
+  try{localStorage.removeItem('ans_'+EX.attemptId)}catch(e){}
+  showResult(r);
+}
+async function viewResult(attemptId,b){
+  await busy(b,async()=>{
+    const r=await call('submitTest',{attemptId:attemptId,answers:{}});
+    if(!r.ok) return toast(r.error,1);
+    show('home',0); show('exam',1); showResult(r);
+  });
+}
+function showResult(r){
+  show('examBody',0); show('resBody',1);
+  let h='<h2>Your result</h2><div class="score">'+r.score+' / '+r.max+' <span class="muted" style="font-size:16px;font-weight:500">('+r.pct+'%)</span></div>';
+  h+='<p class="muted small">+'+r.markRight+' for each correct answer'+(r.markWrong?', −'+r.markWrong+' for each wrong answer':'')+'.</p>';
+  h+='<p style="margin-top:8px">✅ '+r.right+' correct · ❌ '+r.wrong+' wrong · ⏭ '+r.skipped+' skipped · ⏱ '+fmt(r.usedSec)+' of '+fmt(r.limitSec)+'</p>';
+  if(r.late) h+='<p class="msg">This was submitted after the time limit, so it was not scored.</p>';
+  h+='<h3 style="margin:18px 0 6px">Topic-wise performance</h3>';
+  r.topics.forEach(t=>{h+='<div class="tbar"><span>'+esc(t.topic)+' ('+t.right+'/'+t.total+' · '+t.pct+'%)</span><div><i style="width:'+t.pct+'%"></i></div></div>';});
+  h+='<h3 style="margin:18px 0 6px">Suggestions for your preparation</h3><ul class="tips">'+r.tips.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+  h+='<h3 style="margin:18px 0 6px">Answer review</h3>';
+  r.review.forEach(q=>{
+    const ic=q.st==='right'?'✅':q.st==='wrong'?'❌':'⏭';
+    h+='<details class="rv"><summary>'+ic+' Question '+esc(q.no)+'</summary><p style="margin:8px 0">'+esc(q.q)+'</p>';
+    h+=imgHtml(q.img,'qimg');
+    ['A','B','C','D'].forEach(L=>{
+      const oi=(q.oimg&&q.oimg[L])||'';
+      if(q.opts[L]||oi) h+='<div style="margin:4px 0">'+L+'. '+esc(q.opts[L])+(L===q.key?' <span class="ok">✔ correct</span>':'')+(L===q.given&&L!==q.key?' ✖ your answer':'')+imgHtml(oi,'oimg')+'</div>';
+    });
+    h+='<p style="margin-top:8px">Your answer: <b>'+(q.given||'none')+'</b> · Correct: <b>'+esc(q.key)+'</b></p>';
+    if(q.hint) h+='<p>💡 <b>Hint:</b> '+esc(q.hint)+'</p>';
+    h+='</details>';
+  });
+  if(r.reward){
+    h+='<div class="card rwd" style="margin-top:16px">'+(r.reward.credits>0
+      ?'🎁 You earned a free test in '+esc(r.cat)+'! Go to Mock tests and tap "Use free test".'
+      :'🎁 Reward progress in '+esc(r.cat)+': '+r.reward.progress+' / '+r.every+' different tests. Finish '+r.every+' and get 1 test free.')+'</div>';
+  }
+  h+='<div id="resCourses" class="cbox"></div>';
+  h+='<p style="margin-top:16px"><button class="btn btn-primary" onclick="exitExam()">Back to mock tests</button></p>';
+  $('resBody').innerHTML=h; renderResultCourses(r); $('exam').scrollIntoView({block:'start'});
+}
+function exitExam(){
+  clearInterval(TIMER); show('exam',0); show('home',1);
+  applyView(); loadTests();
+}
+
+(function(){const h=location.hash.slice(1); if(h==='study'||h==='tests') VIEW=h;})();
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);
+  if(h==='study'&&!ME){ openAuth('Sign in to open your study material.'); return; }
+  if((h==='study'||h==='tests')&&h!==VIEW){ show('exam',0); show('home',1); setView(h); }});
+init();
+</script></body></html>
