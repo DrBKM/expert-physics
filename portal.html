@@ -275,6 +275,14 @@
  .welcome-sign{font:italic 500 15px "Literata",Georgia,serif;color:var(--muted)!important;margin-top:12px!important}
   .install-tip{background:#fff8eb;border:1px dashed #f2c063;border-radius:10px;padding:10px 14px;font-size:14px}
  @media (display-mode:standalone){.install-tip{display:none}}
+  .rules-drop summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
+ .rules-drop summary::-webkit-details-marker{display:none}
+ .rules-drop summary h2{margin:0}
+ .rules-hint{font-size:13px;font-weight:600;color:var(--brand);white-space:nowrap}
+ .rules-hint::after{content:" ▾"}
+ .rules-drop[open] .rules-hint{font-size:0}
+ .rules-drop[open] .rules-hint::after{content:"Hide ▴";font-size:13px}
+ .rules-drop[open] summary{margin-bottom:6px}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head><body>
@@ -358,18 +366,20 @@
 <div id="home">
  <section class="card welcome">
   <h2>One chapter a day moves you further than you think</h2>
-  <p>Physics rewards steady effort, not last-minute rushes. Every idea you understand today makes the next chapter easier, because in physics everything connects.</p>
+ <!-- <p>Physics rewards steady effort, not last-minute rushes. Every idea you understand today makes the next chapter easier, because in physics everything connects.</p> -->
   <ol class="welcome-steps">
-    <li><b>Learn.</b> Open a chapter and stay with it until you can explain it in your own words.</li>
+   <!-- <li><b>Learn.</b> Open a chapter and stay with it until you can explain it in your own words.</li>
     <li><b>Test.</b> Take a timed mock test the same week. Every mistake you make here is a mark you save in the real exam.</li>
-    <li><b>Improve.</b> Read the hints, revise your weakest topic, then retake the test and beat your own score.</li>
+    <li><b>Improve.</b> Read the hints, revise your weakest topic, then retake the test and beat your own score.</li> -->
+    <li><b>Learn > Test > Improve </b> Read the hints, revise your weakest topic, then retake the test and beat your own score.</li>
   </ol>
-  <p>Your score today is a measurement, not a verdict. Measure, adjust and measure again: that is how physicists work, and how toppers prepare.</p>
+ <!-- <p>Your score today is a measurement, not a verdict. Measure, adjust and measure again: that is how physicists work, and how toppers prepare.</p> -->
   <p class="install-tip">📱 <b>Install the Expert Physics app:</b> on Android tap ⋮ → <b>Install app</b>; on iPhone, in Safari, tap Share → <b>Add to Home Screen</b>.</p>
   <p class="welcome-sign">Expert Physics</p>
 </section>
 <section class="card intro" id="rulesCard">
-  <h2>Mock Test Rules</h2>
+  <details class="rules-drop">
+  <summary><h2>Mock Test Rules</h2><span class="rules-hint">Tap to read</span></summary>
   <p>Please read these rules carefully before you start a timed mock test for HS, NEET, JEE, BS / MS / GATE or job exams.</p>
   <ul>
     <li>Choose your category and open the test you want. Free tests start straight away; the others unlock after a one-time payment (per test, or Full Access for all).</li>
@@ -384,6 +394,7 @@
     <li><strong>Reward:</strong> complete 4 different mock tests in one category and get 1 mock test of that category free.</li>
     <li>Paid tests are for your personal use only. Sharing your login or copying questions is not allowed.</li>
   </ul>
+     </details>
 </section>
 
  <div id="viewTabs" class="chips hide" style="margin:16px 2px 0">
