@@ -154,3 +154,5 @@ tbody th{font-weight:600;color:var(--ep-ink);width:28%}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 .w.narrow{max-width:none}
 .w.narrow>*{max-width:70ch}
+.install-tip{background:#fff8eb;border:1px dashed #f2c063;border-radius:10px;padding:12px 16px;margin:0 0 28px;max-width:70ch}
+@media (display-mode:standalone){.install-tip{display:none}}
