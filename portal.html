@@ -267,6 +267,12 @@
  .cbox h3{font-size:16px;margin:0 2px 10px}
  .rwd{padding:12px 16px;margin:0 0 12px;background:var(--green-soft);border-color:#a7f3d0;font-size:14px}
  @media (max-width:720px){.cgrid{grid-template-columns:1fr}}
+ .welcome{padding:26px 28px;margin-top:16px;border-left:4px solid #E9AE3F}
+ .welcome h2{font:600 23px/1.25 "Literata",Georgia,serif;letter-spacing:-.2px;margin-bottom:8px}
+ .welcome p{color:#334155;font-size:15px;margin:8px 0;max-width:70ch}
+ .welcome-steps{margin:14px 0 6px 20px;display:grid;gap:8px;max-width:70ch}
+ .welcome-steps b{color:var(--brand-d)}
+ .welcome-sign{font:italic 500 15px "Literata",Georgia,serif;color:var(--muted)!important;margin-top:12px!important}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head><body>
@@ -348,8 +354,19 @@
 
 <!-- ============ HOME: intro, tabs, payment panel, study material, mock tests ============ -->
 <div id="home">
+ <section class="card welcome">
+  <h2>One chapter a day moves you further than you think</h2>
+  <p>Physics rewards steady effort, not last-minute rushes. Every idea you understand today makes the next chapter easier, because in physics everything connects.</p>
+  <ol class="welcome-steps">
+    <li><b>Learn.</b> Open a chapter and stay with it until you can explain it in your own words.</li>
+    <li><b>Test.</b> Take a timed mock test the same week. Every mistake you make here is a mark you save in the real exam.</li>
+    <li><b>Improve.</b> Read the hints, revise your weakest topic, then retake the test and beat your own score.</li>
+  </ol>
+  <p>Your score today is a measurement, not a verdict. Measure, adjust and measure again: that is how physicists work, and how toppers prepare.</p>
+  <p class="welcome-sign">Dr. Bipul Kumar Mahato</p>
+</section>
 <section class="card intro" id="rulesCard">
-  <h2>Online Test Rules</h2>
+  <h2>Mock Test Rules</h2>
   <p>Please read these rules carefully before you start a timed mock test for HS, NEET, JEE, BS / MS / GATE or job exams.</p>
   <ul>
     <li>Choose your category and open the test you want. Free tests start straight away; the others unlock after a one-time payment (per test, or Full Access for all).</li>
