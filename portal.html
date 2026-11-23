@@ -924,12 +924,17 @@ function draw(){
       act.append(mkBtn('View ₹'+it.viewPrice,'btn-primary',ICON.eye,()=>buy(it,'view',it.viewPrice)),
                  mkBtn('Download ₹'+it.dlPrice,'btn-outline',ICON.dl,()=>buy(it,'download',it.dlPrice)));
     }
-     if(it.dlOk===false){
+    const printBtn=()=>{
+      const pc=el('a','btn btn-outline','📖 Printed copy'+(it.printPrice?' ₹'+rs(it.printPrice):''));
+      pc.href=it.print||(window.EP_SITE&&EP_SITE.forms&&EP_SITE.forms.book)||'publications.html';
+      pc.target='_blank'; pc.rel='noopener'; return pc;
+    };
+    if(it.dlOk===false){
       [...act.querySelectorAll('button')].filter(b=>/Download/.test(b.textContent)).forEach(b=>b.remove());
       meta.append(el('span','badge b-lock','View only'));
-      const pc=el('a','btn btn-outline','📖 Printed copy');
-      pc.href=it.print||(window.EP_SITE&&EP_SITE.forms&&EP_SITE.forms.book)||'publications.html';
-      pc.target='_blank'; pc.rel='noopener'; act.append(pc);
+      act.append(printBtn());
+    }else if(it.printPrice){
+      act.append(printBtn());
     }
     r.append(el('div','num',String(it.n).padStart(2,'0')),mid,act);
     box.append(r);
@@ -1016,7 +1021,7 @@ async function prepareOrder(){
       b.textContent='PDF download not available';
       const it=LIST.find(x=>x.id===want.id)||{}, m=$('gwmsg');
       m.className='msg big'; m.textContent='This chapter is view-only. You can order a printed copy instead.';
-      const a=el('a','btn btn-gold','📖 Order the printed copy');
+      const a=el('a','btn btn-gold','📖 Order the printed copy'+(it.printPrice?' · ₹'+rs(it.printPrice):''));
       a.href=it.print||(window.EP_SITE&&EP_SITE.forms&&EP_SITE.forms.book)||'publications.html';
       a.target='_blank'; a.rel='noopener';
       m.append(document.createElement('br'),a);
