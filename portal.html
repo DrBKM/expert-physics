@@ -287,6 +287,24 @@
  .pass-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;background:#fff;border:1px solid #f2dcae;border-radius:10px}
  .pass-row b{font-size:14.5px}
  .pass-act .btn{min-width:96px}
+ .plan{display:flex;flex-direction:column}
+ .plan .tag{align-self:flex-start}
+ .plan-feat{margin:14px 0}
+ .plan-feat li{font-size:13.5px}
+ .offer{background:var(--brand-soft);border:1px dashed #a5b4fc;border-radius:10px;padding:11px 13px;font-size:13.5px}
+ .offer b{display:block;margin-bottom:2px;color:var(--brand-d)}
+ .which{margin-top:auto;padding-top:14px;display:grid;gap:3px;font-size:13px;color:var(--muted)}
+ .which b{color:var(--ink);font-size:13.5px}
+ .lib{margin:10px 0 0;font-size:13px;font-weight:600;color:var(--green)}
+ .lib:empty{display:none}
+ .ofr-bg{position:fixed;inset:0;background:rgba(8,19,51,.55);display:grid;place-items:center;z-index:60;padding:16px}
+ .ofr{max-width:440px;width:100%;padding:22px;text-align:center;max-height:90vh;overflow:auto}
+ .ofr-big{font-size:38px;line-height:1}
+ .ofr h3{font-size:18px;margin:8px 0 4px}
+ .ofr-row{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:10px 0}
+ .ofr-pr{display:flex;align-items:center;gap:8px;white-space:nowrap}
+ .ofr-pr s{color:var(--muted);font-size:13px}
+ .ofr .btn.block{margin-top:6px}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head><body>
@@ -455,10 +473,20 @@
     <span class="tag">Per chapter</span>
     <h3>Pay only for what you need</h3>
     <div class="prices">
-     <div><b>₹<span id="vp"></span></b><small>View online</small></div>
-     <div><b>₹<span id="dp"></span></b><small>View + PDF download</small></div>
+     <div><b id="vp"></b><small>View online</small></div>
+     <div><b id="dp"></b><small>View + PDF download</small></div>
     </div>
     <p class="muted small">Pick any chapter from the list below.</p>
+     <ul class="feat plan-feat">
+     <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Read on any phone or computer, marked with your email</li>
+     <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Upgrade to the PDF any time, paying only the difference</li>
+     <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Every update to a chapter you own is free</li>
+    </ul>
+    <div class="offer hide" id="offerBox"><b>🎯 Notes + test offer</b>Buy a chapter's notes and its mock tests cost <span id="ndisc">25</span>% less, applied automatically.</div>
+    <div class="which"><b>Which one suits you?</b>
+     <span>Studying 1 to 5 chapters: buy per chapter.</span>
+     <span>Preparing a whole course: a course pass covers every chapter and mock test.</span></div>
+    <p class="lib" id="libCount"></p>
    </div>
    <div class="card plan featured">
     <span class="tag">★ Best value</span>
@@ -606,7 +634,7 @@
 let TOKEN=null, CUR=null, ME=null, LIST=[], FILTER='all', ORDER=null, POLL=0;
 let VIEW='study', LOADED=false, SCAT=null, TESTS=[], TCATS=[], TCAT=null;
 let COUPON=null, RATING=0;
-let COURSES=[], REW={}, EVERY=4, TSUB=null, TSUBS={};
+let NOTE_DISC=0; let COURSES=[], REW={}, EVERY=4, TSUB=null, TSUBS={};
 try{TOKEN=localStorage.getItem('qt')}catch(e){}
 const $=id=>document.getElementById(id);
 const ICON={
@@ -816,7 +844,8 @@ async function showApp(me,list){
 function applyMe(){
   $('nm').textContent=ME.name; $('av').textContent=String(ME.name||'?').trim().charAt(0).toUpperCase();
   $('st').textContent=ME.paid?'★ Full Access member':'Per-chapter access';
-  $('vp').textContent=ME.viewPrice; $('dp').textContent=ME.dlPrice;
+  const pr=n=>Number(n)>0?'₹'+rs(n):'Free';
+  $('vp').textContent=pr(ME.viewPrice); $('dp').textContent=pr(ME.dlPrice);
   drawPasses();
   $('fullLink').href=location.href.split('#')[0];
   $('promoChk').checked=!!ME.promo;
@@ -834,6 +863,7 @@ async function refreshAll(b){
 function renderList(l){
   if(!l||!l.ok){$('cats').innerHTML='';$('cats').append(Object.assign(el('div','card empty',(l&&l.error)||'Could not load chapters.'),{style:'grid-column:1/-1'}));return;}
   LIST=l.items; LOADED=true;
+  { const own=LIST.filter(x=>x.level!=='none').length; $('libCount').textContent=LIST.length?'Your library: '+own+' of '+LIST.length+' chapters unlocked.':''; }
   if(SCAT&&!LIST.some(x=>catOf(x)===SCAT)) SCAT=null;
   drawCats(); if(SCAT) draw(); syncStudy(); applyView(); renderCourseSlots();
 }
@@ -976,7 +1006,7 @@ async function prepareOrder(){
     say($('gwmsg'),r.error+' · Tap Cancel and try again.'); return; }
   ORDER=r.id; b.href=r.url; b.classList.remove('dis');
   b.textContent='Pay ₹'+rs(r.amount)+' now';
-  b.onclick=()=>{ remember({type:'rzp',order:ORDER});
+  b.onclick=()=>{ remember({type:'rzp',order:ORDER,item:want.id,level:want.level,title:want.title});
     say($('gwmsg'),'Payment page opened. Finish paying, then return to this page. It will unlock by itself.',1);
     watchOrder(ORDER); };
 }
@@ -1007,16 +1037,42 @@ async function watchOrder(id){
     if(job!==POLL) return;
     if(document.hidden) { i--; continue; }          // wait until the customer is back on this page
     const r=await call('checkOrder',{id:id});
-    if(r.ok && r.paid){ forget(); onPaid(); return; }
+    if(r.ok && r.paid){ const pd=pending(); forget(); onPaid(pd&&pd.order===id?pd:null); return; }
   }
 }
-async function onPaid(){
+async function onPaid(info){
   POLL++;
+  const bought=info||(CUR?{item:CUR.id,level:CUR.level,title:CUR.title}:null);
   toast('✅ Payment received. Unlocked!');
   if($('gwmsg')) say($('gwmsg'),'✅ Your purchase is unlocked.',1);
   const m=await call('me'); if(m.ok){ME=m;applyMe();}
-  renderList(await call('list')); loadTests();
-  setTimeout(()=>{ if(!$('pay').classList.contains('hide')) closePay(); },2500);
+  renderList(await call('list')); await loadTests();
+  setTimeout(()=>{
+    if(!$('pay').classList.contains('hide')) closePay();
+    if(bought&&(bought.level==='view'||bought.level==='download')) offerTests(bought);
+  },2500);
+}
+/* after buying a chapter: pop-up with the discounted mock tests linked to it */
+function offerTests(b){
+  const id=String(b.item||'').trim().toLowerCase();
+  const list=TESTS.filter(t=>!t.open&&!t.free&&
+    String(t.chapters||'').toLowerCase().split(/[\s,]+/).indexOf(id)>=0);
+  if(!NOTE_DISC||!list.length) return;
+  const bg=el('div','ofr-bg'), box=el('div','card ofr'); bg.append(box);
+  box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true');
+  box.append(el('div','ofr-big','🎉'),el('h3','','You got '+NOTE_DISC+'% off the mock test'+(list.length>1?'s':'')+' for this chapter'),
+    el('p','muted small','Because you bought '+(b.title||'these notes')+'. The discount is already applied below.'));
+  list.forEach(t=>{
+    const row=el('div','ofr-row'), info=el('div');
+    info.append(el('b','',t.title),el('div','muted small',t.n+' questions · '+t.minutes+' min'));
+    const pr=el('div','ofr-pr'); if(t.fullPrice>t.price) pr.append(el('s','','₹'+rs(t.fullPrice)));
+    pr.append(mkBtn('Buy ₹'+rs(t.price),'btn-gold sm',null,()=>{ bg.remove();
+      buy({id:'T:'+t.id,title:'Mock test: '+t.title,level:'none'},'test',t.price); }));
+    row.append(info,pr); box.append(row);
+  });
+  box.append(mkBtn('Maybe later','btn-outline sm block',null,()=>bg.remove()));
+  bg.onclick=e=>{ if(e.target===bg) bg.remove(); };
+  document.body.append(bg);
 }
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden || !ME) return;
@@ -1203,6 +1259,7 @@ async function loadTests(){
   loadCourses();
   const r=await call('tests');
   if(!r.ok){const g=$('tcats'); g.innerHTML=''; g.append(Object.assign(el('div','card empty',r.error||'Could not load tests.'),{style:'grid-column:1/-1'})); show('tcats',1); show('tlistBox',0); return;}
+  NOTE_DISC=r.noteDisc||0; if($('ndisc')){ $('ndisc').textContent=NOTE_DISC; $('offerBox').classList.toggle('hide',!NOTE_DISC); }
   TESTS=r.items; TCATS=(r.cats||[]).slice(); REW=r.rewards||{}; EVERY=r.every||4; TSUBS=r.subs||{};
   TESTS.forEach(t=>{ if(TCATS.indexOf(t.cat)<0) TCATS.push(t.cat); });   // never hide a test
   if(TCAT&&!TESTS.some(t=>t.cat===TCAT)) TCAT=null;
