@@ -596,14 +596,18 @@ let USE_SAVED=false;
 const savedKey=a=>'c_'+a+'|'+(TOKEN||'');
 function savedGet(a){try{const s=localStorage.getItem(savedKey(a));return s?JSON.parse(s):null;}catch(e){return null;}}
 function savedClear(){try{Object.keys(localStorage).filter(k=>k.indexOf('c_')===0).forEach(k=>localStorage.removeItem(k));}catch(e){}}
+
 async function call(a,p){
   if(USE_SAVED&&SAVED[a]){const s=savedGet(a); if(s) return s;}
-  let r;
+  let txt='', res;
   try{
-    const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+    res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
       body:JSON.stringify({api:a,p:p||{},token:TOKEN})});
-    r=await res.json();
-  }catch(e){ return {ok:false,error:'Network problem. Check your internet connection and try again.'}; }
+    txt=await res.text();
+  }catch(e){ return {ok:false,error:'Network problem ['+a+': '+(e&&e.message||e)+'] Page: '+location.origin}; }
+  let r;
+  try{ r=JSON.parse(txt); }
+  catch(e){ return {ok:false,error:'Unexpected reply ['+a+', HTTP '+res.status+']: '+txt.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').slice(0,160)}; }
   r=r||{ok:false,error:'No response'};
   if(SAVED[a]&&r.ok) try{localStorage.setItem(savedKey(a),JSON.stringify(r));}catch(e){}
   return r;
