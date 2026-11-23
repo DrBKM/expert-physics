@@ -642,7 +642,7 @@
 let TOKEN=null, CUR=null, ME=null, LIST=[], FILTER='all', ORDER=null, POLL=0;
 let VIEW='study', LOADED=false, SCAT=null, TESTS=[], TCATS=[], TCAT=null;
 let COUPON=null, RATING=0;
-let NOTE_DISC=0; let COURSES=[], REW={}, EVERY=4, TSUB=null, TSUBS={};
+let NOTE_DISC=0, PSHIP=0, BOOKS_JUMPED=false; let COURSES=[], REW={}, EVERY=4, TSUB=null, TSUBS={};
 try{TOKEN=localStorage.getItem('qt')}catch(e){}
 const $=id=>document.getElementById(id);
 const ICON={
@@ -1257,7 +1257,7 @@ async function sendReview(b){
 
 /* ---------- video courses / books ---------- */
 async function loadCourses(){
-  const r=await call('courses'); if(r.ok) COURSES=r.items||[];
+  const r=await call('courses'); if(r.ok){ COURSES=r.items||[]; PSHIP=Number(r.printShip)||0; }
   renderCourseSlots();
 }
 function courseMatch(c,keys){
@@ -1287,13 +1287,14 @@ function courseCard(c){
     const a=el('a','btn btn-primary sm block', c.type==='book'?'View book →':/youtube/i.test(c.platform)?'Watch on YouTube →':'View course →');
     a.href=c.url; a.target='_blank'; a.rel='noopener'; d.append(a);
   }
-  if(c.payUrl){
+  if(c.type==='book'&&c.price>0){
+    d.append(mkBtn('🛒 Buy the printed book ₹'+rs(c.price),'btn-gold sm block',null,()=>{
+      if(!ME) return openAuth('Please sign in to order the book. Your order and its status stay in your account.');
+      shipForm({id:'BOOK-'+c.id,title:c.title,printPrice:c.price,printShip:PSHIP});
+    }));
+  }else if(c.payUrl){
     const p=el('a','btn btn-success sm block','💳 Pay'+(c.price?' ₹'+rs(c.price):'')+' securely (Razorpay) →');
     p.href=c.payUrl; p.target='_blank'; p.rel='noopener'; d.append(p);
-  }
-  if(c.bookUrl){
-    const b=el('a','btn btn-gold sm block','📖 Order the book →');
-    b.href=c.bookUrl; b.target='_blank'; b.rel='noopener'; d.append(b);
   }
   return d;
 }
@@ -1306,6 +1307,7 @@ function fillCourses(box,list,title){
 function renderCourseSlots(){
   const all=$('allCourses'); all.innerHTML=''; COURSES.forEach(c=>all.append(courseCard(c)));
   show('coursesBox',COURSES.length>0);
+  if(!BOOKS_JUMPED&&location.hash==='#books'&&COURSES.length){ BOOKS_JUMPED=true; $('coursesBox').scrollIntoView({behavior:'smooth',block:'start'}); }
   fillCourses($('chapCourses'), SCAT?COURSES.filter(c=>courseMatch(c,[SCAT])):[], '🎓 Video lessons for this topic');
   fillCourses($('tCourses'), TCAT?COURSES.filter(c=>courseMatch(c,[TCAT,TSUB])):[], '🎓 Learn before you test: video courses & books');
 }
