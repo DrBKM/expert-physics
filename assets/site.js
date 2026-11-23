@@ -8,7 +8,7 @@ window.EP_SITE = {
   phone: '+91 73650 23766',
   whatsapp: '917365023766',
   // Apps Script web app (the merged project). Ends with /exec.
-  api: 'https://script.google.com/macros/s/AKfycbzzheLqofsqbzJ055T0IqyfWw91iPA4QEncukMJ1viablxIVtdB6SmLLq88Ml2_qqHy/exec',
+  api: 'https://script.google.com/macros/s/AKfycbyoEbMxR_7akB8P2CdplXvbhHD6GEI7ACYlvhOgBI7doX-x_VAC_9lfnxc33I5ikLxF/exec',
   forms: {
     inquiry: 'https://docs.google.com/forms/d/e/1FAIpQLSfFJe0rMoyfhun2Tm6CjY4SoZ-lJblRSung5G5NBYs6rj3Zuw/viewform',
     book: 'https://docs.google.com/forms/d/e/1FAIpQLSdAWu19f7m0fSwf123W0nAP_N51cbMAhKEsQTSkS4yQC88skg/viewform'
