@@ -283,6 +283,10 @@
  .rules-drop[open] .rules-hint{font-size:0}
  .rules-drop[open] .rules-hint::after{content:"Hide ▴";font-size:13px}
  .rules-drop[open] summary{margin-bottom:6px}
+ .passes{display:grid;gap:8px;margin-top:12px}
+ .pass-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;background:#fff;border:1px solid #f2dcae;border-radius:10px}
+ .pass-row b{font-size:14.5px}
+ .pass-act .btn{min-width:96px}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head><body>
@@ -458,19 +462,12 @@
    </div>
    <div class="card plan featured">
     <span class="tag">★ Best value</span>
-    <h3>Full Access</h3>
-    <div class="big">₹<span id="fp"></span> <small>one-time</small></div>
-    <ul class="feat">
-     <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Every chapter: view + download</li>
-     <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>All new content added later, included</li>
-     <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>HS, NEET, JEE, B.Sc. &amp; job-exam material</li>
-    </ul>
-    <button id="fullBtn" class="btn btn-gold block" onclick="buyAll()">Get Full Access</button>
+    <h3>Course passes</h3>
+    <p class="muted small">One payment unlocks every chapter and mock test of the course, view + download. All updates are free once bought.</p>
+    <div id="passList" class="passes"></div>
    </div>
   </div>
  </div>
-
-
   <div id="catBox">
    <div class="sec-head">
     <div><h2>Choose a category</h2><span class="muted" id="catCount"></span></div>
@@ -820,14 +817,11 @@ function applyMe(){
   $('nm').textContent=ME.name; $('av').textContent=String(ME.name||'?').trim().charAt(0).toUpperCase();
   $('st').textContent=ME.paid?'★ Full Access member':'Per-chapter access';
   $('vp').textContent=ME.viewPrice; $('dp').textContent=ME.dlPrice;
-  $('fp').textContent=rs(ME.fullPrice);
+  drawPasses();
   $('fullLink').href=location.href.split('#')[0];
   $('promoChk').checked=!!ME.promo;
   show('phLink',!!ME.otp); $('phNow').textContent=ME.phone||'not added yet';
   applyView();
-  const fb=$('fullBtn');
-  fb.disabled=!!ME.pendingAll;
-  fb.textContent=ME.pendingAll?'⏳ Payment pending verification':'Get Full Access';
 }
 async function refreshAll(b){
   await busy(b,async()=>{
@@ -918,7 +912,7 @@ function buy(it,level,amt){
   CUR={id:it.id,level:level,title:it.title,amt:amt}; ORDER=null; POLL++; COUPON=null;
   $('cp_code').value=''; say($('cpmsg'),'');
   $('ptitle').textContent=it.title;
-  $('pdesc').textContent=level==='all'?'Full access · every chapter, view + download, including future content'
+  $('pdesc').textContent=level==='pass'?'Course pass · every chapter and mock test of this course, view + download · all future updates free':level==='all'?'Full access · every chapter, view + download, including future content'
                         :level==='test'?'Timed mock test · answers and hints appear after you submit · retake anytime':level==='download'?(it.level==='view'?'Upgrade to view + PDF download':'View online + PDF download')
                         :'View online only';
   setAmount(amt,null);
@@ -985,6 +979,18 @@ async function prepareOrder(){
   b.onclick=()=>{ remember({type:'rzp',order:ORDER});
     say($('gwmsg'),'Payment page opened. Finish paying, then return to this page. It will unlock by itself.',1);
     watchOrder(ORDER); };
+}
+function drawPasses(){
+  const box=$('passList'); if(!box) return; box.innerHTML='';
+  (ME.passes||[]).forEach(ps=>{
+    const row=el('div','pass-row'), info=el('div');
+    info.append(el('b','',ps.title)); if(ps.note) info.append(el('div','muted small',ps.note));
+    const act=el('div','pass-act');
+    if(ps.owned) act.append(el('span','badge b-own','✓ Unlocked'));
+    else if(ps.pending) act.append(el('span','badge b-pend','⏳ Pending'));
+    else act.append(mkBtn('₹'+rs(ps.price),'btn-gold sm',null,()=>buy({id:ps.id,title:ps.title+' course pass'},'pass',ps.price)));
+    row.append(info,act); box.append(row);
+  });
 }
 function buyAll(){ buy({id:'ALL',title:'Full Access – all content'},'all',ME.fullPrice); }
 function closePay(){show('pay',0);CUR=null;COUPON=null;POLL++;}
