@@ -110,7 +110,19 @@ ${onPortal ? '' : `<a class="ep-wa" href="https://wa.me/${S.whatsapp}" target="_
     document.querySelectorAll('iframe[data-ep-form]').forEach(f => { f.src = S.forms[f.dataset.epForm] + '?embedded=true'; });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fill); else fill();
-
+  // ---- Installable app (PWA) ----
+  (function () {
+    const head = document.head;
+    const add = (tag, attrs) => { const el = document.createElement(tag); Object.assign(el, attrs); head.appendChild(el); };
+    if (!head.querySelector('link[rel="manifest"]')) add('link', {rel: 'manifest', href: 'manifest.webmanifest'});
+    add('meta', {name: 'apple-mobile-web-app-capable', content: 'yes'});
+    add('meta', {name: 'mobile-web-app-capable', content: 'yes'});
+    add('meta', {name: 'apple-mobile-web-app-title', content: 'Expert Physics'});
+    add('meta', {name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent'});
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+    }
+  })();
   // Student reviews from the portal (only on pages with <div id="liveReviews">)
   window.EP_loadReviews = async function (box, max) {
     if (!box) return;
