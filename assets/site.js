@@ -29,7 +29,7 @@ window.EP_SITE = {
     ['Mock tests', 'portal.html#tests'],
     ['Books', 'publications.html'],
     ['Career', 'career.html'],
-    ['About', 'about.html'],
+ //   ['About', 'about.html'],
     ['Contact', 'contact.html']
   ];
   const isHere = href => href.split('#')[0] === page && (!href.includes('#') || location.hash === '#' + href.split('#')[1]);
