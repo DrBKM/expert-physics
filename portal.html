@@ -307,6 +307,12 @@
  .ofr .btn.block{margin-top:6px}
  .msg.big{font-size:16px;font-weight:700;line-height:1.5}
  .msg.big .btn{margin-top:10px;text-decoration:none}
+ .ship{text-align:left}
+ .ship h3{text-align:center}
+ .ship label{margin:10px 0 4px}
+ .ship-row{display:grid;grid-template-columns:1.2fr 1fr .8fr;gap:8px}
+ .ship-total{font-weight:700;margin:14px 0 8px}
+ @media (max-width:520px){.ship-row{grid-template-columns:1fr 1fr}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head><body>
@@ -656,6 +662,7 @@ function savedGet(a){try{const s=localStorage.getItem(savedKey(a));return s?JSON
 function savedClear(){try{Object.keys(localStorage).filter(k=>k.indexOf('c_')===0).forEach(k=>localStorage.removeItem(k));}catch(e){}}
 
 async function call(a,p){
+  if((a==='createOrder'||a==='coupon')&&CUR&&CUR.ship) p=Object.assign({},p,{ship:CUR.ship});
   if(USE_SAVED&&SAVED[a]){const s=savedGet(a); if(s) return s;}
   let txt='', res;
   try{
@@ -925,7 +932,8 @@ function draw(){
                  mkBtn('Download ₹'+it.dlPrice,'btn-outline',ICON.dl,()=>buy(it,'download',it.dlPrice)));
     }
     const printBtn=()=>{
-      const pc=el('a','btn btn-outline','📖 Printed copy'+(it.printPrice?' ₹'+rs(it.printPrice):''));
+      if(it.printPrice>0) return mkBtn('📖 Printed copy ₹'+rs(it.printPrice),'btn-outline',null,()=>shipForm(it));
+      const pc=el('a','btn btn-outline','📖 Printed copy');
       pc.href=it.print||(window.EP_SITE&&EP_SITE.forms&&EP_SITE.forms.book)||'publications.html';
       pc.target='_blank'; pc.rel='noopener'; return pc;
     };
@@ -953,10 +961,10 @@ function setAmount(final,base){
   $('pold').textContent=(base!=null&&final<base)?'₹'+rs(base)+' → you save ₹'+rs(base-final):'';
 }
 function buy(it,level,amt){
-  CUR={id:it.id,level:level,title:it.title,amt:amt}; ORDER=null; POLL++; COUPON=null;
+    CUR={id:it.id,level:level,title:it.title,amt:amt,ship:it.ship}; ORDER=null; POLL++; COUPON=null;
   $('cp_code').value=''; say($('cpmsg'),'');
   $('ptitle').textContent=it.title;
-  $('pdesc').textContent=level==='pass'?'Course pass · every chapter and mock test of this course, view + download · all future updates free':level==='all'?'Full access · every chapter, view + download, including future content'
+  $('pdesc').textContent=level==='print'?'Printed copy × '+it.ship.qty+' · delivery to '+it.ship.city+' '+it.ship.pin+' · price includes delivery':level==='pass'?'Course pass · every chapter and mock test of this course, view + download · all future updates free':level==='all'?'Full access · every chapter, view + download, including future content'
                         :level==='test'?'Timed mock test · answers and hints appear after you submit · retake anytime':level==='download'?(it.level==='view'?'Upgrade to view + PDF download':'View online + PDF download')
                         :'View online only';
   setAmount(amt,null);
@@ -1021,9 +1029,11 @@ async function prepareOrder(){
       b.textContent='PDF download not available';
       const it=LIST.find(x=>x.id===want.id)||{}, m=$('gwmsg');
       m.className='msg big'; m.textContent='This chapter is view-only. You can order a printed copy instead.';
-      const a=el('a','btn btn-gold','📖 Order the printed copy'+(it.printPrice?' · ₹'+rs(it.printPrice):''));
-      a.href=it.print||(window.EP_SITE&&EP_SITE.forms&&EP_SITE.forms.book)||'publications.html';
-      a.target='_blank'; a.rel='noopener';
+      let a;
+      if(it.printPrice>0){ a=mkBtn('📖 Order the printed copy · ₹'+rs(it.printPrice),'btn-gold',null,()=>{ closePay(); shipForm(it); }); }
+      else{ a=el('a','btn btn-gold','📖 Order the printed copy');
+        a.href=it.print||(window.EP_SITE&&EP_SITE.forms&&EP_SITE.forms.book)||'publications.html';
+        a.target='_blank'; a.rel='noopener'; }
       m.append(document.createElement('br'),a);
       return;
     }
@@ -1047,6 +1057,45 @@ function drawPasses(){
     row.append(info,act); box.append(row);
   });
 }
+/* printed copy: quantity + delivery address, then the normal Razorpay payment */
+function shipForm(it){
+  let sv={}; try{sv=JSON.parse(localStorage.getItem('ship')||'{}');}catch(e){}
+  const ship=Number(it.printShip)||0, bg=el('div','ofr-bg'), box=el('form','card ofr ship'); bg.append(box);
+  box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true');
+  const f=(id,label,attrs)=>{ const l=el('label','',label), i=document.createElement(attrs.tag||'input');
+    i.id='sh_'+id; i.value=attrs.value!=null?attrs.value:(sv[id]||''); Object.keys(attrs).forEach(k=>{ if(k!=='tag'&&k!=='value') i.setAttribute(k,attrs[k]); });
+    l.htmlFor=i.id; return [l,i]; };
+  box.append(el('h3','','📖 Order the printed copy'), el('p','muted small',it.title));
+  const q=f('qty','Copies',{type:'number',min:1,max:10,value:1}), tot=el('p','ship-total');
+  const upd=()=>{ const n=Math.max(1,Math.min(10,Number(q[1].value)||1));
+    tot.textContent='Total ₹'+rs(n*it.printPrice+ship)+(ship?' (₹'+rs(n*it.printPrice)+' + ₹'+rs(ship)+' delivery)':' · free delivery'); };
+  q[1].oninput=upd;
+  box.append(...q, ...f('name','Name for delivery',{autocomplete:'name',required:''}),
+    ...f('phone','Mobile number (for the courier)',{type:'tel',inputmode:'numeric',maxlength:10,autocomplete:'tel-national',required:''}),
+    ...f('addr','Full address (house, street, landmark)',{tag:'textarea',rows:3,autocomplete:'street-address',required:''}));
+  const row=el('div','ship-row');
+  const c=f('city','Town / district',{autocomplete:'address-level2',required:''}), st=f('state','State',{autocomplete:'address-level1',value:sv.state||'West Bengal'}),
+        pn=f('pin','PIN code',{inputmode:'numeric',maxlength:6,autocomplete:'postal-code',required:''});
+  [c,st,pn].forEach(x=>{ const d=el('div'); d.append(...x); row.append(d); });
+  const msg=el('div','msg'), go=el('button','btn btn-gold block','Continue to payment'); go.type='submit';
+  box.append(row, tot, go, msg, mkBtn('Cancel','btn-outline sm block',null,()=>bg.remove()));
+  upd();
+  box.onsubmit=e=>{
+    e.preventDefault();
+    const v=k=>$('sh_'+k).value.trim(), d={qty:Math.max(1,Math.min(10,Number(v('qty'))||1)),name:v('name'),
+      phone:v('phone').replace(/\D/g,'').slice(-10),addr:v('addr'),city:v('city'),state:v('state'),pin:v('pin')};
+    if(!d.name) return say(msg,'Enter the name for delivery.');
+    if(!/^[6-9]\d{9}$/.test(d.phone)) return say(msg,'Enter a valid 10-digit mobile number.');
+    if(d.addr.length<10) return say(msg,'Enter the full delivery address.');
+    if(!d.city) return say(msg,'Enter the town or district.');
+    if(!/^\d{6}$/.test(d.pin)) return say(msg,'Enter the 6-digit PIN code.');
+    try{ localStorage.setItem('ship',JSON.stringify(Object.assign({},d,{qty:1}))); }catch(err){}
+    bg.remove();
+    buy({id:'PRINT:'+it.id,title:it.title+' (printed copy'+(d.qty>1?' × '+d.qty:'')+')',ship:d},'print',d.qty*it.printPrice+ship);
+  };
+  bg.onclick=e=>{ if(e.target===bg) bg.remove(); };
+  document.body.append(bg); $('sh_name').focus();
+}
 function buyAll(){ buy({id:'ALL',title:'Full Access – all content'},'all',ME.fullPrice); }
 function closePay(){show('pay',0);CUR=null;COUPON=null;POLL++;}
 
@@ -1068,7 +1117,7 @@ async function watchOrder(id){
 async function onPaid(info){
   POLL++;
   const bought=info||(CUR?{item:CUR.id,level:CUR.level,title:CUR.title}:null);
-  toast('✅ Payment received. Unlocked!');
+  toast(bought&&bought.level==='print'?'✅ Payment received. Your printed copy order is placed.':'✅ Payment received. Unlocked!');
   if($('gwmsg')) say($('gwmsg'),'✅ Your purchase is unlocked.',1);
   const m=await call('me'); if(m.ok){ME=m;applyMe();}
   renderList(await call('list')); await loadTests();
