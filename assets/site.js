@@ -10,8 +10,8 @@ window.EP_SITE = {
   // Apps Script web app (the merged project). Ends with /exec.
   api: 'https://script.google.com/macros/s/AKfycbyoEbMxR_7akB8P2CdplXvbhHD6GEI7ACYlvhOgBI7doX-x_VAC_9lfnxc33I5ikLxF/exec',
   forms: {
-    inquiry: 'https://docs.google.com/forms/d/e/1FAIpQLSfFJe0rMoyfhun2Tm6CjY4SoZ-lJblRSung5G5NBYs6rj3Zuw/viewform',
-    book: 'https://docs.google.com/forms/d/e/1FAIpQLSdAWu19f7m0fSwf123W0nAP_N51cbMAhKEsQTSkS4yQC88skg/viewform'
+   inquiry: 'https://docs.google.com/forms/d/e/1FAIpQLSfFJe0rMoyfhun2Tm6CjY4SoZ-lJblRSung5G5NBYs6rj3Zuw/viewform',
+   book: 'portal.html#books'
   },
   feeDoc: 'https://drive.google.com/open?id=1o76ePKwYQ-QuatUH5hZw-VNNX0Ry2IlRCbTi-cUmBtk',
   orcid: 'https://orcid.org/0000-0002-9469-1716'
