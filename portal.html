@@ -1262,7 +1262,7 @@ function drawTestList(){
     mid.append(el('div','mt-title',t.title));
     mid.append(el('div','mt-meta',t.n+' questions · '+t.minutes+' min · '+t.max+' marks'+
       (t.free?' · Free':'')+(t.tries?' · attempts '+t.tries+(t.maxTries?'/'+t.maxTries:''):'')+
-      (t.best!==null?' · best score '+t.best:'')+(!t.open&&!t.free?' · ₹'+t.price:'')));
+      (t.best!==null?' · best score '+t.best:'')+(!t.open&&!t.free?' · ₹'+t.price+(t.fullPrice>t.price?' (was ₹'+t.fullPrice+', notes discount)':''):'')));
     const canStart=t.open&&(t.maxTries===0||t.tries<t.maxTries);
     if(!ME){
       act.append(mkBtn(t.free?'Sign in to start':'Sign in to buy ₹'+t.price,'btn-primary sm',null,
