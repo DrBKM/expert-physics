@@ -944,8 +944,8 @@ function draw(){
     const meta=el('div','meta');
     if(it.section&&it.section!==SCAT) meta.append(el('span','',it.section));
     const bd=BADGE[it.tag]||BADGE.locked; meta.append(el('span','badge '+bd[0],bd[1]));
-    if(it.freeLeft>0) meta.append(el('span','badge b-free','⏱ '+Math.ceil(it.freeLeft/60)+' min free reading left'));
-    if(it.previewUsed) meta.append(el('span','badge b-lock','Free reading time used'));
+    if(it.viewsLeft>0) meta.append(el('span','badge b-free','👁 '+it.viewsLeft+(it.paidViews?'':' free')+' view'+(it.viewsLeft>1?'s':'')+' left'));
+    if(it.previewUsed) meta.append(el('span','badge b-lock',it.pack?'Views used':'Viewing limit reached'));
     if(it.pending) meta.append(el('span','badge b-pend','⏳ '+(it.pending==='download'?'Download':'View')+' payment pending'));
     mid.append(meta);
     const act=el('div','actions');
@@ -959,7 +959,8 @@ function draw(){
       act.append(mkBtn('View','btn-primary',ICON.eye,()=>openView(it)),
                  mkBtn('Download ₹'+it.dlPrice,'btn-outline',ICON.dl,()=>buy(it,'download',it.dlPrice)));
     }else{
-      if(it.viewPrice>0) act.append(mkBtn('View ₹'+it.viewPrice,'btn-primary',ICON.eye,()=>buy(it,'view',it.viewPrice)));
+      if(it.previewUsed&&it.pack) act.append(mkBtn(it.pack.views+' more views ₹'+it.pack.price,'btn-primary',ICON.eye,()=>buyViews(it)));
+      else if(it.viewPrice>0) act.append(mkBtn('View ₹'+it.viewPrice,'btn-primary',ICON.eye,()=>buy(it,'view',it.viewPrice)));
       act.append(mkBtn('Download ₹'+it.dlPrice,'btn-outline',ICON.dl,()=>buy(it,'download',it.dlPrice)));
     }
     const printBtn=()=>{
@@ -995,7 +996,7 @@ function buy(it,level,amt){
     CUR={id:it.id,level:level,title:it.title,amt:amt,ship:it.ship}; ORDER=null; POLL++; COUPON=null;
   $('cp_code').value=''; say($('cpmsg'),'');
   $('ptitle').textContent=it.title;
-  $('pdesc').textContent=level==='print'?'Printed copy × '+it.ship.qty+' · delivery to '+it.ship.city+' '+it.ship.pin+' · price includes delivery':level==='pass'?'Course pass · every chapter and mock test of this course, view + download · all future updates free':level==='all'?'Full access · every chapter, view + download, including future content'
+  $('pdesc').textContent=level==='views'?'View pack · opens this chapter '+(it.title.match(/(\d+) more views/)||[0,''])[1]+' more times online':level==='print'?'Printed copy × '+it.ship.qty+' · delivery to '+it.ship.city+' '+it.ship.pin+' · price includes delivery':level==='pass'?'Course pass · every chapter and mock test of this course, view + download · all future updates free':level==='all'?'Full access · every chapter, view + download, including future content'
                         :level==='test'?'Timed mock test · answers and hints appear after you submit · retake anytime':level==='download'?(it.level==='view'?'Upgrade to view + PDF download':'View online + PDF download')
                         :'View online only';
   setAmount(amt,null);
@@ -1128,6 +1129,7 @@ function shipForm(it){
   bg.onclick=e=>{ if(e.target===bg) bg.remove(); };
   document.body.append(bg); $('sh_name').focus();
 }
+function buyViews(it){ buy({id:'VIEWS:'+it.id,title:it.title+' · '+it.pack.views+' more views'},'views',it.pack.price); }
 function buyAll(){ buy({id:'ALL',title:'Full Access – all content'},'all',ME.fullPrice); }
 function closePay(){show('pay',0);CUR=null;COUPON=null;POLL++;}
 
@@ -1206,9 +1208,13 @@ async function openView(it){
   $('pages').innerHTML=''; show('viewer',1); $('viewer').scrollIntoView({behavior:'smooth',block:'start'});
   const r=PDFS[it.id]||await call('view',{id:it.id});
   if(job!==VIEWJOB) return;
-  if(!r.ok){ $('vstat').textContent=r.error; if(/free reading time/i.test(r.error||'')) renderList(await call('list')); return; }
-  if(r.left>=0) startFreeClock(it,r.left); else PDFS[it.id]=r;     // free previews are never kept in memory
-  try{
+  if(!r.ok){ $('vstat').textContent=r.error; if(/views of this chapter/i.test(r.error||'')) renderList(await call('list')); return; }
+  if(r.views>=0){                                   // counted view: never kept in memory, so the next opening counts too
+    LASTCOUNT=it;
+    toast(r.views>0?'👁 '+r.views+' view'+(r.views>1?'s':'')+' left for this chapter.':'This is your last view of this chapter.');
+    if(r.left>0) startFreeClock(it,r.left);
+    call('list').then(renderList);
+  }else PDFS[it.id]=r; try{
     if(!window._pw){
       const t=await (await fetch('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js')).text();
       pdfjsLib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(new Blob([t],{type:'text/javascript'}));
@@ -1235,7 +1241,8 @@ async function openView(it){
     $('vstat').textContent=pdf.numPages+' page'+(pdf.numPages>1?'s':'');
   }catch(e){ $('vstat').textContent='Could not open this file. Make sure it is a PDF.'; }
 }
-function closeViewer(){stopFreeClock(true);VIEWJOB++;$('pages').innerHTML='';show('viewer',0);}
+let LASTCOUNT=null, TIMEUP=false;
+function closeViewer(){const lc=LASTCOUNT; LASTCOUNT=null; stopFreeClock(true);VIEWJOB++;$('pages').innerHTML='';show('viewer',0); if(lc) afterCounted(lc);}
 /* ---------- free reading time: counts down while a free chapter is open ---------- */
 let FREE=null;
 const mmss=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
@@ -1246,7 +1253,7 @@ function startFreeClock(it,left){
   const step=()=>{
     if(!FREE) return;
     const s=Math.max(0,Math.round((FREE.end-Date.now())/1000));
-    t.textContent='⏱ Free reading: '+mmss(s)+' left'; t.classList.toggle('low',s<=60);
+    t.textContent='⏱ This view: '+mmss(s)+' left'; t.classList.toggle('low',s<=60);
     if(s<=0) return endFree(FREE.it);
     if(Date.now()-FREE.last>=20000) freeTick();
   };
@@ -1264,15 +1271,18 @@ function stopFreeClock(send){
   clearInterval(FREE.int); if(send) freeTick();
   FREE=null; $('vtimer').classList.add('hide');
 }
-async function endFree(it){
-  stopFreeClock(true); closeViewer();
+function endFree(it){ TIMEUP=true; closeViewer(); }
+async function afterCounted(it){                      // after a counted view closes: views left, or the options box
   renderList(await call('list'));
   const cur=LIST.find(x=>x.id===it.id)||it;
+  if(cur.viewsLeft!==0){ if(TIMEUP) toast('⏱ Time for this view is over. '+cur.viewsLeft+' view'+(cur.viewsLeft>1?'s':'')+' left.'); TIMEUP=false; return; }
+  TIMEUP=false;
   const bg=el('div','ofr-bg'), box=el('div','card ofr'); bg.append(box);
   box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true');
-  box.append(el('div','ofr-big','⏱'),el('h3','','Your free reading time is over'),
-    el('p','muted small','You have used the free reading time for '+it.title+'. Keep studying it with one of these:'));
-  if(cur.viewPrice>0) box.append(mkBtn('View online ₹'+rs(cur.viewPrice),'btn-primary block',null,()=>{bg.remove();buy(cur,'view',cur.viewPrice);}));
+  box.append(el('div','ofr-big','👁'),el('h3','','You have used your views'),
+    el('p','muted small','You have used all your views of '+it.title+'. Keep studying it with one of these:'));
+  if(cur.pack) box.append(mkBtn(cur.pack.views+' more views ₹'+rs(cur.pack.price),'btn-primary block',null,()=>{bg.remove();buyViews(cur);}));
+  if(!cur.pack&&cur.viewPrice>0) box.append(mkBtn('View online ₹'+rs(cur.viewPrice),'btn-primary block',null,()=>{bg.remove();buy(cur,'view',cur.viewPrice);}));
   if(cur.dlOk!==false) box.append(mkBtn('View + PDF ₹'+rs(cur.dlPrice),'btn-gold block',null,()=>{bg.remove();buy(cur,'download',cur.dlPrice);}));
   if(cur.printPrice>0) box.append(mkBtn('📖 Printed copy ₹'+rs(cur.printPrice),'btn-outline block',null,()=>{bg.remove();shipForm(cur);}));
   box.append(mkBtn('Close','btn-outline sm block',null,()=>bg.remove()));
