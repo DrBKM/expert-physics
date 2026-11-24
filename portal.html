@@ -313,6 +313,9 @@
  .ship-row{display:grid;grid-template-columns:1.2fr 1fr .8fr;gap:8px}
  .ship-total{font-weight:700;margin:14px 0 8px}
  @media (max-width:520px){.ship-row{grid-template-columns:1fr 1fr}}
+ .vtimer{margin-left:10px;font-weight:700;font-size:13px;color:var(--brand-d);background:var(--brand-soft);padding:3px 9px;border-radius:999px}
+ .vtimer.low{color:#fff;background:#dc2626}
+ .ofr .btn.block+.btn.block{margin-top:8px}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head><body>
@@ -538,7 +541,7 @@
 
 
  <section id="viewer" class="card viewer hide">
-  <div class="vbar"><div><b id="vtitle"></b><span id="vstat" class="muted"></span></div>
+  <div class="vbar"><div><b id="vtitle"></b><span id="vstat" class="muted"></span><span id="vtimer" class="vtimer hide"></span></div>
    <button class="btn btn-outline sm" onclick="closeViewer()">✕ Close</button></div>
   <div id="pages" oncontextmenu="return false"></div>
  </section>
@@ -918,6 +921,8 @@ function draw(){
     const meta=el('div','meta');
     if(it.section&&it.section!==SCAT) meta.append(el('span','',it.section));
     const bd=BADGE[it.tag]||BADGE.locked; meta.append(el('span','badge '+bd[0],bd[1]));
+    if(it.freeLeft>0) meta.append(el('span','badge b-free','⏱ '+Math.ceil(it.freeLeft/60)+' min free reading left'));
+    if(it.previewUsed) meta.append(el('span','badge b-lock','Free reading time used'));
     if(it.pending) meta.append(el('span','badge b-pend','⏳ '+(it.pending==='download'?'Download':'View')+' payment pending'));
     mid.append(meta);
     const act=el('div','actions');
@@ -928,8 +933,8 @@ function draw(){
       act.append(mkBtn('View','btn-primary',ICON.eye,()=>openView(it)),
                  mkBtn('Download ₹'+it.dlPrice,'btn-outline',ICON.dl,()=>buy(it,'download',it.dlPrice)));
     }else{
-      act.append(mkBtn('View ₹'+it.viewPrice,'btn-primary',ICON.eye,()=>buy(it,'view',it.viewPrice)),
-                 mkBtn('Download ₹'+it.dlPrice,'btn-outline',ICON.dl,()=>buy(it,'download',it.dlPrice)));
+      if(it.viewPrice>0) act.append(mkBtn('View ₹'+it.viewPrice,'btn-primary',ICON.eye,()=>buy(it,'view',it.viewPrice)));
+      act.append(mkBtn('Download ₹'+it.dlPrice,'btn-outline',ICON.dl,()=>buy(it,'download',it.dlPrice)));
     }
     const printBtn=()=>{
       if(it.printPrice>0) return mkBtn('📖 Printed copy ₹'+rs(it.printPrice),'btn-outline',null,()=>shipForm(it));
@@ -1174,8 +1179,8 @@ async function openView(it){
   $('pages').innerHTML=''; show('viewer',1); $('viewer').scrollIntoView({behavior:'smooth',block:'start'});
   const r=PDFS[it.id]||await call('view',{id:it.id});
   if(job!==VIEWJOB) return;
-  if(!r.ok){ $('vstat').textContent=r.error; return; }
-  PDFS[it.id]=r;
+  if(!r.ok){ $('vstat').textContent=r.error; if(/free reading time/i.test(r.error||'')) renderList(await call('list')); return; }
+  if(r.left>=0) startFreeClock(it,r.left); else PDFS[it.id]=r;     // free previews are never kept in memory
   try{
     if(!window._pw){
       const t=await (await fetch('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js')).text();
@@ -1203,7 +1208,51 @@ async function openView(it){
     $('vstat').textContent=pdf.numPages+' page'+(pdf.numPages>1?'s':'');
   }catch(e){ $('vstat').textContent='Could not open this file. Make sure it is a PDF.'; }
 }
-function closeViewer(){VIEWJOB++;$('pages').innerHTML='';show('viewer',0);}
+function closeViewer(){stopFreeClock(true);VIEWJOB++;$('pages').innerHTML='';show('viewer',0);}
+/* ---------- free reading time: counts down while a free chapter is open ---------- */
+let FREE=null;
+const mmss=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+function startFreeClock(it,left){
+  stopFreeClock(false);
+  FREE={it:it,end:Date.now()+left*1000,last:Date.now()};
+  const t=$('vtimer'); t.classList.remove('hide');
+  const step=()=>{
+    if(!FREE) return;
+    const s=Math.max(0,Math.round((FREE.end-Date.now())/1000));
+    t.textContent='⏱ Free reading: '+mmss(s)+' left'; t.classList.toggle('low',s<=60);
+    if(s<=0) return endFree(FREE.it);
+    if(Date.now()-FREE.last>=20000) freeTick();
+  };
+  FREE.int=setInterval(step,1000); step();
+}
+function freeTick(){
+  if(!FREE) return;
+  const f=FREE, sec=Math.round((Date.now()-f.last)/1000); f.last=Date.now();
+  call('viewTick',{id:f.it.id,sec:sec}).then(r=>{
+    if(r&&r.ok&&r.left>=0&&FREE===f) f.end=Math.min(f.end,Date.now()+r.left*1000);
+  });
+}
+function stopFreeClock(send){
+  if(!FREE) return;
+  clearInterval(FREE.int); if(send) freeTick();
+  FREE=null; $('vtimer').classList.add('hide');
+}
+async function endFree(it){
+  stopFreeClock(true); closeViewer();
+  renderList(await call('list'));
+  const cur=LIST.find(x=>x.id===it.id)||it;
+  const bg=el('div','ofr-bg'), box=el('div','card ofr'); bg.append(box);
+  box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true');
+  box.append(el('div','ofr-big','⏱'),el('h3','','Your free reading time is over'),
+    el('p','muted small','You have used the free reading time for '+it.title+'. Keep studying it with one of these:'));
+  if(cur.viewPrice>0) box.append(mkBtn('View online ₹'+rs(cur.viewPrice),'btn-primary block',null,()=>{bg.remove();buy(cur,'view',cur.viewPrice);}));
+  if(cur.dlOk!==false) box.append(mkBtn('View + PDF ₹'+rs(cur.dlPrice),'btn-gold block',null,()=>{bg.remove();buy(cur,'download',cur.dlPrice);}));
+  if(cur.printPrice>0) box.append(mkBtn('📖 Printed copy ₹'+rs(cur.printPrice),'btn-outline block',null,()=>{bg.remove();shipForm(cur);}));
+  box.append(mkBtn('Close','btn-outline sm block',null,()=>bg.remove()));
+  bg.onclick=e=>{ if(e.target===bg) bg.remove(); };
+  document.body.append(bg);
+}
+window.addEventListener('pagehide',()=>{ if(FREE) freeTick(); });
 
 /* ---------- email offers opt-in ---------- */
 async function setPromo(cb){
