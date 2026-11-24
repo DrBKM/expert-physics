@@ -319,6 +319,31 @@
  @media print{#viewer,#pages{display:none!important}}
  body.noview #pages{filter:blur(18px)}
  #pages{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  #viewer .vbar{top:68px}
+ .vload{max-width:520px;margin:28px auto;padding:28px 24px;background:#fff;border:1px solid var(--line);border-radius:16px;text-align:center;box-shadow:0 10px 30px rgba(8,19,51,.08)}
+ .vload-t{font-size:18px;margin:14px 0 12px}
+ .vload-bar{height:8px;border-radius:99px;background:#e6ebf5;overflow:hidden}
+ .vload-bar span{display:block;height:100%;width:4%;border-radius:99px;background:linear-gradient(90deg,var(--brand),#E9AE3F);transition:width .2s linear}
+ .vload-steps{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:6px;text-align:left;font-size:14px;color:var(--muted)}
+ .vload-steps li{padding-left:26px;position:relative}
+ .vload-steps li::before{content:"";position:absolute;left:4px;top:4px;width:12px;height:12px;border-radius:50%;border:2px solid #cbd5e5}
+ .vload-steps li.now{color:var(--ink);font-weight:600}
+ .vload-steps li.now::before{border-color:var(--brand);border-top-color:transparent;animation:vspin .8s linear infinite}
+ .vload-steps li.done{color:var(--green)}
+ .vload-steps li.done::before{content:"✓";border:0;top:-1px;left:3px;font-weight:700}
+ .vload-fact{margin:18px 0 0;padding:12px 14px;background:#fff8eb;border-left:3px solid #E9AE3F;border-radius:0 10px 10px 0;text-align:left;font-size:14px;min-height:62px}
+ .vload-fact b{color:#b45309}
+ .vload-slow{margin:10px 0 0}
+ .vload-atom{position:relative;width:76px;height:76px;margin:0 auto}
+ .vload-atom b{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#E9AE3F}
+ .vload-atom i{position:absolute;inset:0;border:2px solid var(--brand);border-radius:50%;transform:rotate(var(--r)) scaleY(.38);opacity:.75}
+ .vload-atom i:nth-child(1){--r:0deg}.vload-atom i:nth-child(2){--r:60deg}.vload-atom i:nth-child(3){--r:120deg}
+ .vload-atom{animation:vspin 3.2s linear infinite}
+ .vload-err{max-width:520px;margin:28px auto;padding:18px;background:#fff;border:1px solid #fecaca;border-radius:12px;color:#b91c1c;font-weight:600;text-align:center}
+ .vmore{margin:10px auto 4px;width:max-content;max-width:100%;padding:8px 14px;border-radius:99px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--brand-d)}
+ #pages canvas+canvas{margin-top:10px}
+ @keyframes vspin{to{transform:rotate(360deg)}}
+ @media (prefers-reduced-motion:reduce){.vload-atom,.vload-steps li.now::before{animation:none}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head><body>
@@ -1207,17 +1232,21 @@ async function dl(it,b){
 let VIEWJOB=0; const PDFS={};
 async function openView(it){
   const job=++VIEWJOB;
-  $('vtitle').textContent=it.title; $('vstat').textContent='Loading…';
+  $('vtitle').textContent=it.title; $('vstat').textContent='';
   $('pages').innerHTML=''; show('viewer',1); $('viewer').scrollIntoView({behavior:'smooth',block:'start'});
+  const L=showLoader(it,job);
   const r=PDFS[it.id]||await call('view',{id:it.id});
-  if(job!==VIEWJOB) return;
-  if(!r.ok){ $('vstat').textContent=r.error; if(/views of this chapter/i.test(r.error||'')) renderList(await call('list')); return; }
+  if(job!==VIEWJOB) return L.stop();
+  if(!r.ok){ L.stop(); $('vstat').textContent=r.error; $('pages').innerHTML='';
+    $('pages').append(el('div','vload-err',r.error)); if(/views of this chapter/i.test(r.error||'')) renderList(await call('list')); return; }
   if(r.views>=0){                                   // counted view: never kept in memory, so the next opening counts too
     LASTCOUNT=it;
     toast(r.views>0?'👁 '+r.views+' view'+(r.views>1?'s':'')+' left for this chapter.':'This is your last view of this chapter.');
     if(r.left>0) startFreeClock(it,r.left);
     call('list').then(renderList);
-  }else PDFS[it.id]=r; try{
+  }else PDFS[it.id]=r;
+  L.stage(2);
+  try{
     if(!window._pw){
       const t=await (await fetch('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js')).text();
       pdfjsLib.GlobalWorkerOptions.workerSrc=URL.createObjectURL(new Blob([t],{type:'text/javascript'}));
@@ -1226,9 +1255,11 @@ async function openView(it){
     const pdf=await pdfjsLib.getDocument({data:b64(r.data)}).promise;
     const box=$('pages'), dpr=Math.min(window.devicePixelRatio||1,2);
     const W=Math.max(320,box.clientWidth-28);
+    const more=el('div','vmore');
     for(let n=1;n<=pdf.numPages;n++){
-      if(job!==VIEWJOB) return;
-      $('vstat').textContent='Rendering page '+n+' of '+pdf.numPages+'…';
+      if(job!==VIEWJOB) return L.stop();
+      if(n===1) L.stage(3); else more.textContent='Loading page '+n+' of '+pdf.numPages+'…';
+      $('vstat').textContent=' · page '+n+' of '+pdf.numPages;
       const pg=await pdf.getPage(n), base=pg.getViewport({scale:1});
       const vp=pg.getViewport({scale:Math.min(3,(W*dpr)/base.width)});
       const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
@@ -1239,10 +1270,50 @@ async function openView(it){
       const step=Math.round(c.width/5);
       for(let y=0;y<c.height+c.width;y+=step) x.fillText(ME.email+'   '+ME.email,-c.width*0.15,y);
       x.restore();
+      if(n===1){ L.stop(); box.innerHTML=''; }      // first page shows at once; the rest follow below it
       box.append(c);
+      if(n<pdf.numPages){ box.append(more); } else more.remove();
     }
-    $('vstat').textContent=pdf.numPages+' page'+(pdf.numPages>1?'s':'');
-  }catch(e){ $('vstat').textContent='Could not open this file. Make sure it is a PDF.'; }
+    $('vstat').textContent=' · '+pdf.numPages+' page'+(pdf.numPages>1?'s':'');
+  }catch(e){ L.stop(); $('pages').innerHTML=''; $('pages').append(el('div','vload-err','Could not open this file. Please try again in a minute.')); }
+}
+/* ---------- big loading panel with progress, steps and rotating physics facts ---------- */
+const VFACTS=[
+  'Light from the Sun takes about 8 minutes 20 seconds to reach Earth.',
+  'A solid sphere rolling without slipping keeps 2/7 of its kinetic energy as rotation.',
+  'Escape velocity from Earth’s surface is about 11.2 km/s.',
+  'Sound travels about 343 m/s in air at 20 °C, but about 1,500 m/s in water.',
+  'In a vacuum a hammer and a feather fall together: Apollo 15 showed it on the Moon in 1971.',
+  'Lightning can heat air to around 30,000 K, about five times hotter than the Sun’s surface.',
+  '1 eV = 1.6 × 10⁻¹⁹ J, the natural unit of energy for atoms and nuclei.',
+  'Study tip: testing yourself fixes an idea better than reading it again.',
+  'Study tip: revise on day 1, day 7 and day 30. Spaced revision beats one long session.',
+  'Mock tests: finish 4 tests in a category and the next one is free.'
+];
+function showLoader(it,job){
+  const box=$('pages'), w=el('div','vload'); w.setAttribute('role','status'); w.setAttribute('aria-live','polite');
+  w.innerHTML='<div class="vload-atom" aria-hidden="true"><i></i><i></i><i></i><b></b></div>'+
+    '<h3 class="vload-t"></h3><div class="vload-bar"><span></span></div>'+
+    '<ol class="vload-steps"><li>Fetching your chapter securely</li><li>Preparing the pages</li><li>Adding your watermark</li></ol>'+
+    '<p class="vload-fact"><b>While you wait:</b> <span></span></p><p class="vload-slow muted small"></p>';
+  w.querySelector('.vload-t').textContent='Opening “'+it.title+'”';
+  box.append(w);
+  const bar=w.querySelector('.vload-bar span'), steps=w.querySelectorAll('.vload-steps li'), fact=w.querySelector('.vload-fact span');
+  let st=1, pct=4, fi=Math.floor(Math.random()*VFACTS.length), t0=Date.now();
+  const caps=[0,62,85,96];                           // the bar creeps towards the cap of the current step
+  const paint=()=>{ steps.forEach((li,i)=>{ li.className=i+1<st?'done':i+1===st?'now':''; }); };
+  const nextFact=()=>{ fact.textContent=VFACTS[fi++%VFACTS.length]; };
+  nextFact(); paint();
+  const tick=setInterval(()=>{
+    if(job!==VIEWJOB){ api.stop(); return; }
+    pct+=(caps[st]-pct)*0.06; bar.style.width=pct.toFixed(1)+'%';
+    const s=(Date.now()-t0)/1000;
+    if(s>18) w.querySelector('.vload-slow').textContent='Large chapter or slow connection. It is still loading, please keep this page open.';
+  },200);
+  const ft=setInterval(nextFact,5000);
+  const api={ stage(n){ st=n; pct=Math.max(pct,caps[n-1]); paint(); },
+              stop(){ clearInterval(tick); clearInterval(ft); bar.style.width='100%'; } };
+  return api;
 }
 let LASTCOUNT=null, TIMEUP=false;
 function closeViewer(){const lc=LASTCOUNT; LASTCOUNT=null; stopFreeClock(true);VIEWJOB++;$('pages').innerHTML='';show('viewer',0); if(lc) afterCounted(lc);}
