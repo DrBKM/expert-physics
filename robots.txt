@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://drbkm.github.io/expert-physics/sitemap.xml
