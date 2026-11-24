@@ -316,6 +316,9 @@
  .vtimer{margin-left:10px;font-weight:700;font-size:13px;color:var(--brand-d);background:var(--brand-soft);padding:3px 9px;border-radius:999px}
  .vtimer.low{color:#fff;background:#dc2626}
  .ofr .btn.block+.btn.block{margin-top:8px}
+ @media print{#viewer,#pages{display:none!important}}
+ body.noview #pages{filter:blur(18px)}
+ #pages{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head><body>
@@ -1617,5 +1620,15 @@ function exitExam(){
 (function(){const h=location.hash.slice(1); if(h==='study'||h==='tests') VIEW=h;})();
 window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);
   if((h==='study'||h==='tests')&&h!==VIEW){ show('exam',0); show('home',1); setView(h); }});
-init();
+/* deterrents: blur the open chapter when the window loses focus, block right-click and the Print Screen key */
+(function(){
+  const hide=()=>document.body.classList.add('noview'), showV=()=>document.body.classList.remove('noview');
+  window.addEventListener('blur',hide); window.addEventListener('focus',showV);
+  document.addEventListener('visibilitychange',()=>document.hidden?hide():showV());
+  document.addEventListener('contextmenu',e=>{ if(e.target.closest('#pages')) e.preventDefault(); });
+  document.addEventListener('keyup',e=>{ if(e.key==='PrintScreen'){ hide();
+    try{navigator.clipboard.writeText('Screenshots of Expert Physics notes are not allowed.');}catch(x){}
+    setTimeout(showV,1500); } });
+})();
+ init();
 </script></body></html>
