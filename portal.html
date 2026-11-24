@@ -696,7 +696,7 @@ const rs=n=>Number(n).toLocaleString('en-IN');
 
 /* ---------- Study material / Mock tests: both sections are always on the page; the tabs just jump to them ---------- */
 function applyView(){
-  const signed=!!ME, hasCh=signed&&(!LOADED||LIST.length>0);
+  const signed=!!ME, hasCh=signed?(!LOADED||LIST.length>0):LIST.length>0;   // visitors see the chapter list too
   if(!hasCh&&VIEW==='study') VIEW='tests';
   show('viewTabs',hasCh);
   [...$('viewTabs').children].forEach(b=>b.classList.toggle('on',b.dataset.v===VIEW));
@@ -732,7 +732,30 @@ function showAuth(){
   show('boot',0); show('userbox',0); show('exam',0); show('home',1);
   show('auth',0); show('signinTop',1); show('promoCard',0);
   applyView(); loadTests(); loadReviews();
-  if(location.hash==='#study') openAuth('Sign in to open your study material.');
+  loadGuest(); scheduleSignin();
+}
+/* ---------- visitors: browse first, sign in after a few seconds ---------- */
+const GUEST_SECONDS=8;            // seconds a visitor can look around before the sign-in box appears
+async function loadGuest(){
+  const l=await call('list');
+  if(!ME&&l&&l.ok){ renderList(l); if(location.hash==='#study'&&LIST.length) setView('study'); }
+}
+function scheduleSignin(){
+  let seen=false; try{seen=!!sessionStorage.getItem('ep_asked');}catch(e){}
+  if(seen) return;
+  setTimeout(()=>{ if(!ME&&$('pay').classList.contains('hide')&&!document.querySelector('.ofr-bg'))
+    askSignin('Sign in or create a free account to read free chapters, take mock tests and keep your scores.'); },GUEST_SECONDS*1000);
+}
+function askSignin(msg){
+  if(ME||document.querySelector('.ask-bg')) return;
+  try{sessionStorage.setItem('ep_asked','1');}catch(e){}
+  const bg=el('div','ofr-bg ask-bg'), box=el('div','card ofr'); bg.append(box);
+  box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true');
+  box.append(el('div','ofr-big','👋'),el('h3','','Welcome to Expert Physics'),el('p','muted small',msg),
+    mkBtn('Sign in or create account','btn-primary block',null,()=>{ bg.remove(); openAuth(); }),
+    mkBtn('Keep browsing','btn-outline sm block',null,()=>bg.remove()));
+  bg.onclick=e=>{ if(e.target===bg) bg.remove(); };
+  document.body.append(bg);
 }
 function openAuth(msg){
   show('auth',1);
@@ -875,7 +898,7 @@ async function refreshAll(b){
 function renderList(l){
   if(!l||!l.ok){$('cats').innerHTML='';$('cats').append(Object.assign(el('div','card empty',(l&&l.error)||'Could not load chapters.'),{style:'grid-column:1/-1'}));return;}
   LIST=l.items; LOADED=true;
-  { const own=LIST.filter(x=>x.level!=='none').length; $('libCount').textContent=LIST.length?'Your library: '+own+' of '+LIST.length+' chapters unlocked.':''; }
+  { const own=LIST.filter(x=>x.level!=='none').length; $('libCount').textContent=(ME&&LIST.length)?'Your library: '+own+' of '+LIST.length+' chapters unlocked.':''; }
   if(SCAT&&!LIST.some(x=>catOf(x)===SCAT)) SCAT=null;
   drawCats(); if(SCAT) draw(); syncStudy(); applyView(); renderCourseSlots();
 }
@@ -926,7 +949,10 @@ function draw(){
     if(it.pending) meta.append(el('span','badge b-pend','⏳ '+(it.pending==='download'?'Download':'View')+' payment pending'));
     mid.append(meta);
     const act=el('div','actions');
-    if(it.level==='download'){
+    if(!ME){
+      act.append(mkBtn(it.tag==='locked'?'Sign in to unlock':'Sign in to read free','btn-primary',ICON.eye,
+        ()=>askSignin('Sign in or create a free account to open “'+it.title+'”.')));
+    }else if(it.level==='download'){
       act.append(mkBtn('View','btn-primary',ICON.eye,()=>openView(it)),
                  mkBtn('Download','btn-success',ICON.dl,b=>dl(it,b)));
     }else if(it.level==='view'){
@@ -1064,6 +1090,7 @@ function drawPasses(){
 }
 /* printed copy: quantity + delivery address, then the normal Razorpay payment */
 function shipForm(it){
+  if(!ME) return askSignin('Sign in to order the printed copy. Your order and its status stay in your account.');
   let sv={}; try{sv=JSON.parse(localStorage.getItem('ship')||'{}');}catch(e){}
   const ship=Number(it.printShip)||0, bg=el('div','ofr-bg'), box=el('form','card ofr ship'); bg.append(box);
   box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true');
@@ -1579,7 +1606,6 @@ function exitExam(){
 
 (function(){const h=location.hash.slice(1); if(h==='study'||h==='tests') VIEW=h;})();
 window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);
-  if(h==='study'&&!ME){ openAuth('Sign in to open your study material.'); return; }
   if((h==='study'||h==='tests')&&h!==VIEW){ show('exam',0); show('home',1); setView(h); }});
 init();
 </script></body></html>
