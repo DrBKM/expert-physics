@@ -1248,13 +1248,36 @@ document.addEventListener('visibilitychange',()=>{
 });
 
 function b64(s){const b=atob(s),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
-
+function loadJs(src){ return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=no; document.head.append(s); }); }
+/* writes the buyer's name + email on every page of the PDF before it is saved */
+async function stampPdf(bytes){
+  if(!window.PDFLib) await loadJs('https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js');
+  const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib;
+  const doc=await PDFDocument.load(bytes,{ignoreEncryption:true});
+  const font=await doc.embedFont(StandardFonts.HelveticaBold);
+  const clean=s=>String(s||'').replace(/[^\x20-\x7E]/g,'').trim();
+  const who=[clean(ME.name),clean(ME.email)||clean(ME.phone)].filter(Boolean).join(' | ')||'Expert Physics student';
+  const day=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  const foot='Licensed to '+who+' | downloaded '+day+' | Expert Physics. Not for sharing or resale.';
+  doc.getPages().forEach(pg=>{
+    const {width:w,height:h}=pg.getSize();
+    const fs=Math.max(6,Math.min(8,w/80));
+    pg.drawText(foot,{x:Math.max(12,(w-font.widthOfTextAtSize(foot,fs))/2),y:10,size:fs,font,color:rgb(.4,.4,.4)});
+    const a=Math.atan2(h,w), s=Math.min(w,h)/18, tw=font.widthOfTextAtSize(who,s);
+    pg.drawText(who,{x:w/2-Math.cos(a)*tw/2+Math.sin(a)*s/3,y:h/2-Math.sin(a)*tw/2-Math.cos(a)*s/3,size:s,font,
+      color:rgb(.55,.55,.55),opacity:.13,rotate:degrees(a*180/Math.PI)});
+  });
+  doc.setSubject('Licensed to '+who); doc.setKeywords(['Expert Physics',who]);
+  return doc.save();
+}
 async function dl(it,b){
   await busy(b,async()=>{
     const r=await call('download',{id:it.id});
     if(!r.ok) return toast(r.error,1);
+    let bytes=b64(r.data);
+    if(/pdf/i.test(r.mime||r.name)){ try{ bytes=await stampPdf(bytes); }catch(e){ console.warn('stamp failed',e); } }
     const a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([b64(r.data)],{type:r.mime}));
+    a.href=URL.createObjectURL(new Blob([bytes],{type:r.mime}));
     a.download=r.name; document.body.append(a); a.click(); a.remove();
     toast('Download started');
   });
