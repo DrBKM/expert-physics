@@ -890,7 +890,7 @@ async function start(b,live){
   if(b.visits!=null){$('vis').textContent=b.visits;show('visWrap',1);}
   OTP=!!b.otp; show('segPh',OTP);
   if(OTP&&!OTP_TAB){ tab('ph'); OTP_TAB=true; }      // mobile OTP becomes the default sign-in when SMS is set up
-  if(TOKEN && b.me && b.me.ok){ await showApp(b.me,b.list); if(live){ const p=pending(); if(p&&p.type==='rzp') watchOrder(p.order); } }
+  if(TOKEN && b.me && b.me.ok){ await showApp(b.me,b.list); if(live && !(await payReturn())){ const p=pending(); if(p&&p.type==='rzp') watchOrder(p.order); } }
   else{ if(live&&TOKEN){TOKEN=null;try{localStorage.removeItem('qt')}catch(e){}} showAuth(); }
 }
 
@@ -1178,28 +1178,46 @@ async function watchOrder(id){
 }
 async function onPaid(info){
   POLL++;
-  const bought=info||(CUR?{item:CUR.id,level:CUR.level,title:CUR.title}:null);
+  const bought=info||(CUR?{item:CUR.id,level:CUR.level,title:CUR.title,order:ORDER}:null);
   const isDl=bought&&bought.level==='download';
   toast(bought&&bought.level==='print'?'✅ Payment received. Your printed copy order is placed.':'✅ Payment received. Unlocked!');
   if($('gwmsg')) say($('gwmsg'),'✅ Your purchase is unlocked.',1);
   const m=await call('me'); if(m.ok){ME=m;applyMe();}
   renderList(await call('list')); await loadTests();
-  if(isDl){ autoDownload(bought); }               // PDF bought: download at once, keep the box open
+  if(isDl) autoDownload(bought);
   setTimeout(()=>{
-    if(!isDl && !$('pay').classList.contains('hide')) closePay();
-    if(bought&&(bought.level==='view'||bought.level==='download')) offerTests(bought);
-  },isDl?6000:2500);
+    if(!$('pay').classList.contains('hide')) closePay();
+    if(!isDl && bought && bought.level==='view') offerTests(bought);
+  },isDl?800:2500);
 }
-/* right after a PDF purchase: start the download and leave a button in case the browser blocks it */
+/* PDF bought: download at once, with a button in case the browser blocks it */
 function autoDownload(b){
+  const key='ad:'+(b.order||''); let done=false;
+  try{ done=!!(b.order&&localStorage.getItem(key)); if(b.order) localStorage.setItem(key,'1'); }catch(e){}
   const it=LIST.find(x=>x.id===b.item)||{id:b.item,title:b.title};
-  show('pay',1);
-  const m=$('gwmsg'); m.className='msg big';
-  m.textContent='✅ Paid. Your PDF is downloading now. If it does not start, tap the button: ';
-  const btn=mkBtn('⬇ Download the PDF now','btn-gold',ICON.dl,()=>dl(it,btn));
-  m.append(document.createElement('br'),btn);
-  $('pay').scrollIntoView({behavior:'smooth',block:'start'});
-  dl(it,btn);
+  const bg=el('div','ofr-bg'), box=el('div','card ofr'); bg.append(box);
+  box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true');
+  box.append(el('div','ofr-big','✅'),el('h3','','Payment received'),
+    el('p','muted small',done?'Your PDF is ready to download.':'Your PDF is downloading now. If it does not start, tap the button.'));
+  const btn=mkBtn('⬇ Download '+(it.title||'the PDF'),'btn-gold block',ICON.dl,()=>dl(it,btn));
+  box.append(btn,mkBtn('Close','btn-outline sm block',null,()=>{ bg.remove(); offerTests(b); }));
+  document.body.append(bg);
+  if(!done) dl(it,btn);                     // only one tab downloads automatically
+}
+/* buyer sent back here by Razorpay: confirm the payment, then unlock and download */
+async function payReturn(){
+  const q=new URLSearchParams(location.search), id=q.get('rzp');
+  if(!id) return false;
+  history.replaceState(null,'',location.pathname);   // a page refresh won't repeat this
+  const info={order:id,item:q.get('item'),level:q.get('lv'),title:(LIST.find(x=>x.id===q.get('item'))||{}).title};
+  toast('Confirming your payment…');
+  for(let i=0;i<8;i++){
+    const r=await call('checkOrder',{id:id});
+    if(r.ok&&r.paid){ forget(); onPaid(info); return true; }
+    await new Promise(s=>setTimeout(s,3000));
+  }
+  toast('Payment not confirmed yet. It will unlock by itself within a few minutes.',1);
+  watchOrder(id); return true;
 }
 /* after buying a chapter: pop-up with the discounted mock tests linked to it */
 function offerTests(b){
