@@ -1179,14 +1179,27 @@ async function watchOrder(id){
 async function onPaid(info){
   POLL++;
   const bought=info||(CUR?{item:CUR.id,level:CUR.level,title:CUR.title}:null);
+  const isDl=bought&&bought.level==='download';
   toast(bought&&bought.level==='print'?'✅ Payment received. Your printed copy order is placed.':'✅ Payment received. Unlocked!');
   if($('gwmsg')) say($('gwmsg'),'✅ Your purchase is unlocked.',1);
   const m=await call('me'); if(m.ok){ME=m;applyMe();}
   renderList(await call('list')); await loadTests();
+  if(isDl){ autoDownload(bought); }               // PDF bought: download at once, keep the box open
   setTimeout(()=>{
-    if(!$('pay').classList.contains('hide')) closePay();
+    if(!isDl && !$('pay').classList.contains('hide')) closePay();
     if(bought&&(bought.level==='view'||bought.level==='download')) offerTests(bought);
-  },2500);
+  },isDl?6000:2500);
+}
+/* right after a PDF purchase: start the download and leave a button in case the browser blocks it */
+function autoDownload(b){
+  const it=LIST.find(x=>x.id===b.item)||{id:b.item,title:b.title};
+  show('pay',1);
+  const m=$('gwmsg'); m.className='msg big';
+  m.textContent='✅ Paid. Your PDF is downloading now. If it does not start, tap the button: ';
+  const btn=mkBtn('⬇ Download the PDF now','btn-gold',ICON.dl,()=>dl(it,btn));
+  m.append(document.createElement('br'),btn);
+  $('pay').scrollIntoView({behavior:'smooth',block:'start'});
+  dl(it,btn);
 }
 /* after buying a chapter: pop-up with the discounted mock tests linked to it */
 function offerTests(b){
