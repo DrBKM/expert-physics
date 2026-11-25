@@ -2,7 +2,7 @@
    Only files from this website are cached. Sign-in, payments, tests and PDFs (script.google.com)
    always go to the server and are never stored here.
    After changing any page or file on GitHub, raise VERSION by one so phones pick up the change. */
-const VERSION = 'ep-v14';
+const VERSION = 'ep-v15';
 const CORE = ['./', './index.html', './portal.html', './offline.html',
   './assets/site.js', './assets/chrome.css', './assets/site.css',
   './assets/img/logo.webp', './assets/img/mark-96.png', './assets/img/app-192.png'];
