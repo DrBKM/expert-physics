@@ -1199,7 +1199,7 @@ function autoDownload(b){
   box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true');
   box.append(el('div','ofr-big','✅'),el('h3','','Payment received'),
     el('p','muted small',done?'Your PDF is ready to download.':'Your PDF is downloading now. If it does not start, tap the button.'));
-  const btn=mkBtn('⬇ Download '+(it.title||'the PDF'),'btn-gold block',ICON.dl,()=>dl(it,btn));
+  const btn=mkBtn('Download '+(it.title||'the PDF'),'btn-gold block',ICON.dl,()=>dl(it,btn));
   box.append(btn,mkBtn('Close','btn-outline sm block',null,()=>{ bg.remove(); offerTests(b); }));
   document.body.append(bg);
   if(!done) dl(it,btn);                     // only one tab downloads automatically
